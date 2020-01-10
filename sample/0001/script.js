@@ -1,15 +1,12 @@
 
-import {WebGLFrame} from './webgl.js';
+// JavaScript での関数の定義
+function loaded() {
+    // const キーワードでの変数宣言と、セレクタによる要素の参照
+    const out = document.querySelector('#out');
+    // 参照先の要素にテキストを設定
+    out.textContent = '😈😈😈';
+}
 
-window.addEventListener('DOMContentLoaded', () => {
-    // WebGLFrame クラスを new キーワードでインスタンス化
-    let webgl = new WebGLFrame();
-    // WebGLFrame.init メソッドには、HTML に書かれた canvas の id 属性名を指定
-    webgl.init('webgl-canvas');
-    webgl.load()        // ← ここでまずロードの処理が開始される
-    .then(() => {
-        webgl.setup();  // ← ロードが完了するとここに処理が移る（セットアップ）
-        webgl.render(); // ← セットアップが終わったらレンダリングを開始
-    });
-}, false);
+// ウェブページのコンテンツがロードした時点で自動的に関数を実行
+window.addEventListener('DOMContentLoaded', loaded, false);
 

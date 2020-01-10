@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="module" src="./script.js"></script>
+        <script src="./script.js"></script>
         <link rel="stylesheet" href="./style.css">
     </head>
     <body>
-        <canvas id="webgl-canvas"></canvas>
+        <div id="wrapper">
+            <p>
+                これは段落です。
+                段落はブロック要素となるため、それ単体で改行を伴うひとつのブロックになります。
+                HTML では、ファイル上で改行されている部分であっても、そのまま改行が反映されるわけではありません。
+                事実、この &lt;p&gt; タグで記述された段落は、実際にブラウザでプレビューしてみるとすべての文章が横一列につながった状態で表示されます。
+                （ただしウィンドウ幅の限界まで到達すると自然に改行されたように文章が回り込みます）
+            </p>
+            <p>
+                一方で、ブロック要素とは異なり、改行を伴わず、ひとつの文章のなかに埋め込むことができるものを <span class="red">インライン要素</span> と呼びます。
+            </p>
+            <p id="out">
+                <!-- ここに JavaScript から文字を出力 -->
+            </p>
+        </div>
     </body>
 </html>
