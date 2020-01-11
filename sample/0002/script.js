@@ -21,6 +21,10 @@ function loaded(){
     (function(){
         console.log('これは即時関数からの出力です');
     })();
+
+    // テンプレートリテラル（ES2015）
+    let string = 'インライン展開';
+    let template = `template literal 内では変数を${string}できます`;
 }
 
 // ウェブページのコンテンツがロード完了した時点で自動的に関数を実行
