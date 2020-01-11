@@ -25,6 +25,8 @@ function loaded(){
     // テンプレートリテラル（ES2015）
     let string = 'インライン展開';
     let template = `template literal 内では変数を${string}できます`;
+
+    document.querySelector('#out').textContent = '👻';
 }
 
 // ウェブページのコンテンツがロード完了した時点で自動的に関数を実行

@@ -10,3 +10,8 @@ html, body {
     height: 100%;
 }
 
+#out {
+    font-size: 20vw;
+    text-align: center;
+}
+
