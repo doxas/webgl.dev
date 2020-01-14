@@ -15,7 +15,10 @@ window.addEventListener('DOMContentLoaded', () => {
     // クリアするメソッドを呼ぶ
     canvasUtil.clear();
 
-    // 矩形を描画する
+    // 矩形を塗りつぶしモードで描画する
     canvasUtil.fillRect(25, 50, 100, 200, 'red');
+
+    // 矩形を枠線モードで描画する
+    canvasUtil.strokeRect(50, 25, 200, 100, 'green');
 }, false);
 

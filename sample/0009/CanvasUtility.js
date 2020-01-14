@@ -1,10 +1,18 @@
 
 export class CanvasUtility {
     /**
-     * 規定の塗りつぶしカラー（CSS スタイル）
+     * 規定の塗りつぶし（fill）カラー
      * @return {string}
      */
-    static get DEFAULT_FILL(){
+    static get DEFAULT_FILL_COLOR(){
+        return 'black';
+    }
+
+    /**
+     * 規定の枠線（stroke）カラー
+     * @return {string}
+     */
+    static get DEFAULT_STROKE_COLOR(){
         return 'black';
     }
 
@@ -60,16 +68,29 @@ export class CanvasUtility {
     }
 
     /**
-     * 矩形を描画する
+     * 矩形を塗りつぶし（fill）モードで描画する
      * @param {number} x - 矩形の X 座標
      * @param {number} y - 矩形の Y 座標
      * @param {number} width - 矩形の幅
      * @param {number} height - 矩形の高さ
-     * @param {string} [color=CanvasUtility.DEFAULT_FILL] - CSS スタイルの色
+     * @param {string} [color=CanvasUtility.DEFAULT_FILL_COLOR] - CSS スタイルの色
      */
-    fillRect(x, y, width, height, color = CanvasUtility.DEFAULT_FILL){
+    fillRect(x, y, width, height, color = CanvasUtility.DEFAULT_FILL_COLOR){
         this.ctx.fillStyle = color;
         this.ctx.fillRect(x, y, width, height);
+    }
+
+    /**
+     * 矩形を枠線（stroke）モードで描画する
+     * @param {number} x - 矩形の X 座標
+     * @param {number} y - 矩形の Y 座標
+     * @param {number} width - 矩形の幅
+     * @param {number} height - 矩形の高さ
+     * @param {string} [color=CanvasUtility.DEFAULT_STROKE_COLOR] - CSS スタイルの色
+     */
+    strokeRect(x, y, width, height, color = CanvasUtility.DEFAULT_STROKE_COLOR){
+        this.ctx.strokeStyle = color;
+        this.ctx.strokeRect(x, y, width, height);
     }
 }
 
