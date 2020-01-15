@@ -103,10 +103,15 @@ export class CanvasUtility {
      */
     strokeLine(sx, sy, ex, ey, color = CanvasUtility.DEFAULT_STROKE_COLOR){
         this.ctx.strokeStyle = color;
+        // パスの設定を開始することを明示する
         this.ctx.beginPath();
+        // パスの始点を移動させる
         this.ctx.moveTo(sx, sy);
+        // ラインの終点までパスを引く
         this.ctx.lineTo(ex, ey);
+        // パスの設定を終了することを明示する
         this.ctx.closePath();
+        // 引いたパスに対して枠線モードで描画する
         this.ctx.stroke();
     }
 }
