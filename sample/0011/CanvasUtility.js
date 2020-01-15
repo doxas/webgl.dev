@@ -117,10 +117,14 @@ export class CanvasUtility {
      */
     loadImage(path){
         return new Promise((resolve) => {
+            // HTMLImageElement のインスタンスを生成する
             const img = new Image();
+            // まず最初にロード完了時の処理を登録しておく
             img.addEventListener('load', () => {
+                // 読み込みが完了した時点で resolve する
                 resolve(img);
             });
+            // 登録後、読み込む画像のパスをソースに指定する
             img.src = path;
         });
     }
