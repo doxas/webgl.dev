@@ -61,6 +61,9 @@ window.addEventListener('DOMContentLoaded', () => {
         const radians = CanvasUtility.degreesToRadians(45);
         // 回転を加えた上で描画させる
         canvasUtil.drawImage(img, 0, 0, 128, 128, 50, 50, 128, 128, radians);
+
+        // Canvas の現在の状態を DataURL に変換する
+        console.log(canvasUtil.canvas.toDataURL('image/jpeg'));
     });
 
     // テキストを塗りつぶしモードで描画する
