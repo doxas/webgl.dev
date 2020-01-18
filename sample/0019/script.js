@@ -99,15 +99,15 @@ window.addEventListener('DOMContentLoaded', () => {
         const x = cos * radius;
         const y = sin * radius;
         // 三角形の各辺を描画する
-        canvasUtil.strokeLine(centerX,     centerY, centerX + x, centerY,     'red');
-        canvasUtil.strokeLine(centerX + x, centerY, centerX + x, centerY + y, 'green');
+        canvasUtil.strokeLine(centerX,     centerY, centerX + x, centerY,     'deeppink');
+        canvasUtil.strokeLine(centerX + x, centerY, centerX + x, centerY + y, 'deepskyblue');
         canvasUtil.strokeLine(centerX,     centerY, centerX + x, centerY + y);
 
         // Canvas 上にログを出力しておく
         const radian = Math.PI * 2 - angle;
         canvasUtil.fillText(`angle(radian): ${radian}`, 0, 20, 'orange')
-        canvasUtil.fillText(`cos: ${cos}`, 0, 40, 'red')
-        canvasUtil.fillText(`sin: ${-sin}`, 0, 60, 'green')
+        canvasUtil.fillText(`cos: ${cos}`, 0, 40, 'deeppink')
+        canvasUtil.fillText(`sin: ${-sin}`, 0, 60, 'deepskyblue')
     }
 
 }, false);
