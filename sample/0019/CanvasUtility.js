@@ -151,9 +151,10 @@ export class CanvasUtility {
      * @param {string} [color=CanvasUtility.DEFAULT_FILL_COLOR] - CSS スタイルの色
      */
     fillCircle(x, y, radius, color = CanvasUtility.DEFAULT_FILL_COLOR){
+        const rad = Math.max(radius, 0.0);
         this.ctx.fillStyle = color;
         this.ctx.beginPath();
-        this.ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+        this.ctx.arc(x, y, rad, 0, Math.PI * 2, false);
         this.ctx.closePath();
         this.ctx.fill();
     }
@@ -166,9 +167,10 @@ export class CanvasUtility {
      * @param {string} [color=CanvasUtility.DEFAULT_STROKE_COLOR] - CSS スタイルの色
      */
     strokeCircle(x, y, radius, color = CanvasUtility.DEFAULT_STROKE_COLOR){
+        const rad = Math.max(radius, 0.0);
         this.ctx.strokeStyle = color;
         this.ctx.beginPath();
-        this.ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+        this.ctx.arc(x, y, rad, 0, Math.PI * 2, false);
         this.ctx.closePath();
         this.ctx.stroke();
     }
@@ -182,9 +184,10 @@ export class CanvasUtility {
      * @param {string} [color=CanvasUtility.DEFAULT_FILL_COLOR] - CSS スタイルの色
      */
     fillArc(x, y, angle, radius, color = CanvasUtility.DEFAULT_FILL_COLOR){
+        const rad = Math.max(radius, 0.0);
         this.ctx.fillStyle = color;
         this.ctx.beginPath();
-        this.ctx.arc(x, y, radius, 0, angle, true);
+        this.ctx.arc(x, y, rad, 0, angle, true);
         this.ctx.closePath();
         this.ctx.fill();
     }
@@ -198,9 +201,10 @@ export class CanvasUtility {
      * @param {string} [color=CanvasUtility.DEFAULT_STROKE_COLOR] - CSS スタイルの色
      */
     strokeArc(x, y, angle, radius, color = CanvasUtility.DEFAULT_STROKE_COLOR){
+        const rad = Math.max(radius, 0.0);
         this.ctx.strokeStyle = color;
         this.ctx.beginPath();
-        this.ctx.arc(x, y, radius, 0, angle, true);
+        this.ctx.arc(x, y, rad, 0, angle, true);
         this.ctx.stroke();
         this.ctx.closePath();
     }

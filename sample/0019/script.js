@@ -16,6 +16,9 @@ window.addEventListener('DOMContentLoaded', () => {
         height: HEIGHT,
     });
 
+    // Shift キー押下で角度を固定できるようにするための処理
+    let latestAngle = 0;
+
     // Canvas 上でマウスカーソルが動いた際に描画を行う
     canvasUtil.canvas.addEventListener('mousemove', mouseMove, false);
 
@@ -39,7 +42,14 @@ window.addEventListener('DOMContentLoaded', () => {
         // X 座標から描画する円の半径が決まるようにする
         const radius = x * 0.5;
         // Y 座標から円弧の角度が決まるようにする
-        const angle = (y / HEIGHT) * Math.PI * 2;
+        let angle = (y / HEIGHT) * Math.PI * 2;
+        if(evt.shiftKey === true){
+            // shift キーが押されている場合は直近の角度を再利用する
+            angle = latestAngle;
+        }else{
+            // shift キーが押されていない場合は latestAngle を更新しておく
+            latestAngle = angle;
+        }
 
         // 黒いラインで描かれる円を描画
         drawCircle(radius);
@@ -105,9 +115,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Canvas 上にログを出力しておく
         const radian = Math.PI * 2 - angle;
-        canvasUtil.fillText(`angle(radian): ${radian}`, 0, 20, 'orange')
-        canvasUtil.fillText(`cos: ${cos}`, 0, 40, 'deeppink')
-        canvasUtil.fillText(`sin: ${-sin}`, 0, 60, 'deepskyblue')
+        canvasUtil.fillText(`radius: ${radius}`, 10, 20);
+        canvasUtil.fillText(`angle(radian): ${radian}`, 10, 40, 'orange');
+        canvasUtil.fillText(`cos: ${cos}`, 10, 60, 'deeppink');
+        canvasUtil.fillText(`sin: ${-sin}`, 10, 80, 'deepskyblue');
     }
 
 }, false);
