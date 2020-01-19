@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
         // グリッドの再描画を行う
         drawGrid();
         // ベクトルを表すラインを描画する
-        drawLine(x, y);
+        drawLine(x, y, evt.shiftKey);
     }
 
     /**
@@ -73,8 +73,9 @@ window.addEventListener('DOMContentLoaded', () => {
      * ベクトルを表す原点から伸びるラインを描画する
      * @param {number} x - ベクトルの終点の X 座標
      * @param {number} y - ベクトルの終点の Y 座標
+     * @param {boolean} [isNormalize=false] - ベクトルを単位化するかどうか
      */
-    function drawLine(x, y){
+    function drawLine(x, y, isNormalize = false){
         // Canvas の中心を求めるため、幅と高さの半分の値を求める
         const centerX = WIDTH / 2;
         const centerY = HEIGHT / 2;
@@ -86,17 +87,27 @@ window.addEventListener('DOMContentLoaded', () => {
         canvasUtil.strokeLine(centerX, centerY, centerX, y, 'deepskyblue');
         canvasUtil.strokeLine(centerX, y, x, y, '#ccc');
 
-        // 原点から指定された終点まで赤いラインでベクトルを描画する
-        canvasUtil.alpha = 1.0;
-        canvasUtil.lineWidth = 2;
-        canvasUtil.strokeLine(centerX, centerY, x, y, 'red');
-
-        // Canvas 上にログを出力しておく
+        // Canvas 上にログを出力するための値を計算しておく
         const unit = 1.0 / GRID_COUNT * 2;        // グリッドの幅
         const logX = (x - centerX) / centerX * 2; // グリッド幅に応じた X の値
         const logY = (y - centerY) / centerY * 2; // グリッド幅に応じた Y の値
         // ベクトルの長さを計算する
         const length = Math.sqrt(logX * logX + logY * logY);
+
+        // 原点から指定された終点まで赤いラインでベクトルを描画する
+        canvasUtil.alpha = 1.0;
+        canvasUtil.lineWidth = 2;
+        if(isNormalize === true){
+            const nx = logX / length; // X を単位化
+            const ny = logY / length; // Y を単位化
+            const cx = centerX + nx * centerX / 2; // グリッドに合わせた量に変換
+            const cy = centerY + ny * centerY / 2; // グリッドに合わせた量に変換
+            canvasUtil.strokeLine(centerX, centerY, cx, cy, 'red');
+        }else{
+            canvasUtil.strokeLine(centerX, centerY, x, y, 'red');
+        }
+
+        // ログの出力
         canvasUtil.fillText(`グリッドの幅: ${unit}`, 10, 20);
         canvasUtil.fillText(`X: ${logX}`, 10, 40, 'deeppink');
         canvasUtil.fillText(`Y: ${-logY}`, 10, 60, 'deepskyblue');
