@@ -18,9 +18,6 @@ window.addEventListener('DOMContentLoaded', () => {
         height: HEIGHT,
     });
 
-    // Shift キー押下で角度を固定できるようにするための処理
-    let latestAngle = 0;
-
     // Canvas 上でマウスカーソルが動いた際に描画を行う
     canvasUtil.canvas.addEventListener('mousemove', mouseMove, false);
 
@@ -87,19 +84,19 @@ window.addEventListener('DOMContentLoaded', () => {
         canvasUtil.strokeLine(centerX, centerY, centerX, y, 'deepskyblue');
         canvasUtil.strokeLine(centerX, y, x, y, '#ccc');
 
-        // Canvas 上にログを出力するための値を計算しておく
-        const unit = 1.0 / GRID_COUNT * 2;        // グリッドの幅
-        const logX = (x - centerX) / centerX * 2; // グリッド幅に応じた X の値
-        const logY = (y - centerY) / centerY * 2; // グリッド幅に応じた Y の値
+        // グリッドの幅に合わせた単位に変換する
+        const unit = 1.0 / GRID_COUNT * 2;         // グリッドの幅
+        const gridX = (x - centerX) / centerX * 2; // グリッド幅に応じた X の値
+        const gridY = (y - centerY) / centerY * 2; // グリッド幅に応じた Y の値
         // ベクトルの長さを計算する
-        const length = Math.sqrt(logX * logX + logY * logY);
+        const length = Math.sqrt(gridX * gridX + gridY * gridY);
 
         // 原点から指定された終点まで赤いラインでベクトルを描画する
         canvasUtil.alpha = 1.0;
         canvasUtil.lineWidth = 2;
         if(isNormalize === true){
-            const nx = logX / length; // X を単位化
-            const ny = logY / length; // Y を単位化
+            const nx = gridX / length; // X を単位化
+            const ny = gridY / length; // Y を単位化
             const cx = centerX + nx * centerX / 2; // グリッドに合わせた量に変換
             const cy = centerY + ny * centerY / 2; // グリッドに合わせた量に変換
             canvasUtil.strokeLine(centerX, centerY, cx, cy, 'red');
@@ -109,8 +106,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // ログの出力
         canvasUtil.fillText(`グリッドの幅: ${unit}`, 10, 20);
-        canvasUtil.fillText(`X: ${logX}`, 10, 40, 'deeppink');
-        canvasUtil.fillText(`Y: ${-logY}`, 10, 60, 'deepskyblue');
+        canvasUtil.fillText(`X: ${gridX}`, 10, 40, 'deeppink');
+        canvasUtil.fillText(`Y: ${-gridY}`, 10, 60, 'deepskyblue');
         canvasUtil.fillText(`ベクトルの長さ: ${length}`, 10, 80, 'red');
     }
 
