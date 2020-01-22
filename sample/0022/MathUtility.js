@@ -8,7 +8,7 @@ export class MathUtility {
 class Vec2 {
     // static method
     static calcLength(x, y){
-        return Math.sqrt(x * x + y + y);
+        return Math.sqrt(x * x + y * y);
     }
     /**
      * @constructor
@@ -46,8 +46,13 @@ class Vec2 {
      */
     normalize(){
         const l = this.length;
-        this.x /= l;
-        this.y /= l;
+        if(l === 0.0){
+            this.x = 0.0;
+            this.y = 0.0;
+        }else{
+            this.x /= l;
+            this.y /= l;
+        }
         return this;
     }
     /**
