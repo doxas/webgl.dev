@@ -86,7 +86,10 @@ window.addEventListener('DOMContentLoaded', () => {
         const gridY = (y - centerY) / centerY * 2; // グリッド幅に応じた Y の値
         // ベクトルの長さを計算する
         const V = new MathUtility.Vec2(gridX, gridY);
-        console.log(V.length);
+        console.log(V.length, V.array);
+        V.array = [V.x, V.y];
+        console.log(V.negate());
+        console.log(V.normalize());
         const length = Math.sqrt(gridX * gridX + gridY * gridY);
 
         // わかりやすさのために線を太くする
