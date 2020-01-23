@@ -80,44 +80,39 @@ window.addEventListener('DOMContentLoaded', () => {
         const centerX = WIDTH / 2;
         const centerY = HEIGHT / 2;
 
-        // グリッドの幅に合わせた単位に変換する
-        const unit = 1.0 / GRID_COUNT * 2;         // グリッドの幅
-        const gridX = (x - centerX) / centerX * 2; // グリッド幅に応じた X の値
-        const gridY = (y - centerY) / centerY * 2; // グリッド幅に応じた Y の値
-        // ベクトルの長さを計算する
-        const V = new MathUtility.Vec2(gridX, gridY);
-        console.log(V.length, V.array);
-        V.array = [V.x, V.y];
-        console.log(V.negate());
-        console.log(V.normalize());
-        const length = Math.sqrt(gridX * gridX + gridY * gridY);
-
         // わかりやすさのために線を太くする
         canvasUtil.lineWidth = 6;
 
         // X 軸に水平なベクトルをピンクのラインで描画する
         canvasUtil.strokeLine(centerX, centerY, centerX + centerX / 2, centerY, 'deeppink');
-        // マウスカーソル位置へのベクトルを単位化してから青のラインで描画する
-        const nx = gridX / length; // X を単位化
-        const ny = gridY / length; // Y を単位化
-        const cx = centerX + nx * centerX / 2; // グリッドに合わせた量に変換
-        const cy = centerY + ny * centerY / 2; // グリッドに合わせた量に変換
+
+        // グリッドの幅に合わせた単位に変換する
+        const unit = 1.0 / GRID_COUNT * 2;         // グリッドの幅
+        const gridX = (x - centerX) / centerX * 2; // グリッド幅に応じた X の値
+        const gridY = (y - centerY) / centerY * 2; // グリッド幅に応じた Y の値
+
+        // Vec2 オブジェクトのインスタンスを生成する
+        const vector = new MathUtility.Vec2(gridX, gridY);
+        // Vec2 オブジェクトのメソッドを利用して単位化する
+        vector.normalize();
+        // ベクトルを青のラインで描画する
+        const cx = centerX + vector.x * centerX / 2; // グリッドに合わせた量に変換
+        const cy = centerY + vector.y * centerY / 2; // グリッドに合わせた量に変換
         canvasUtil.strokeLine(centerX, centerY, cx, cy, 'deepskyblue');
 
-        // 青のベクトルは以下のように X 軸に水平
-        // ※ X が 1.0 で Y が 0.0 なので単位ベクトル
-        const blueX = 1.0;
-        const blueY = 0.0;
+        // ピンクのラインをベクトルとして見た場合、以下のように X 軸に水平
+        // ※ X が 1.0 で Y が 0.0 なので、長さはちょうど 1.0 で単位ベクトル
+        const pinkVector = new MathUtility.Vec2(1.0, 0.0);
 
         // ピンクと青のベクトルの内積を求める
-        const dotProduct = nx * blueX + ny * blueY;
+        const dotProduct = vector.dot(pinkVector);
         // 内積の結果をオレンジの棒グラフで描画
         const dHorizontal = centerX + dotProduct * (WIDTH / 4);
         const dVertical = HEIGHT - 100;
         canvasUtil.strokeLine(centerX, dVertical, dHorizontal, dVertical, 'darkorange');
 
         // ピンクと青のベクトルの外積を求める
-        const crossProduct = nx * blueY - ny * blueX;
+        const crossProduct = vector.cross(pinkVector);
         // 外積の結果を緑の棒グラフで描画
         const cHorizontal = 100;
         const cVertical = centerY - crossProduct * (HEIGHT / 4);
@@ -126,11 +121,28 @@ window.addEventListener('DOMContentLoaded', () => {
         // 線の太さを元に戻す
         canvasUtil.lineWidth = 2;
 
+        // 内積と外積の結果からラジアンを求める
+        let radian = 0.0;
+        if(crossProduct === 0){
+            // 外積が 0 である場合……
+            // ピンクのベクトルに対して青のベクトルは完全に水平となる
+            radian = Math.acos(dotProduct);
+        }else if(crossProduct > 0){
+            // 外積が 0 より大きい場合……
+            // ピンクのベクトルに対して青のベクトルは左側にある
+            radian = Math.acos(dotProduct);
+        }else{
+            // 外積が 0 より小さい場合……
+            // ピンクのベクトルに対して青のベクトルは右側にある
+            radian = Math.PI * 2.0 - Math.acos(dotProduct);
+        }
+
         // ログの出力
         canvasUtil.fillText(`グリッドの幅: ${unit}`, 10, 20);
-        canvasUtil.fillText(`２つの単位ベクトル同士の内積と外積は……`, 10, 40);
+        canvasUtil.fillText(`２つの単位ベクトル同士の内積と外積、角度は……`, 10, 40);
         canvasUtil.fillText(`dot: ${dotProduct}`, 10, 70, 'darkorange');
         canvasUtil.fillText(`cross: ${crossProduct}`, 10, 100, 'green');
+        canvasUtil.fillText(`radian: ${radian}`, 10, 125, 'red');
     }
 
 }, false);
