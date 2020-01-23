@@ -98,20 +98,20 @@ window.addEventListener('DOMContentLoaded', () => {
         const cy = centerY + ny * centerY / 2; // グリッドに合わせた量に変換
         canvasUtil.strokeLine(centerX, centerY, cx, cy, 'deepskyblue');
 
-        // 青のベクトルは以下のように X 軸に水平
-        // ※ X が 1.0 で Y が 0.0 なので単位ベクトル
-        const blueX = 1.0;
-        const blueY = 0.0;
+        // ピンクのラインをベクトルとして見た場合、以下のように X 軸に水平
+        // ※ X が 1.0 で Y が 0.0 なので、長さはちょうど 1.0 で単位ベクトル
+        const pinkX = 1.0;
+        const pinkY = 0.0;
 
         // ピンクと青のベクトルの内積を求める
-        const dotProduct = nx * blueX + ny * blueY;
+        const dotProduct = nx * pinkX + ny * pinkY;
         // 内積の結果をオレンジの棒グラフで描画
         const dHorizontal = centerX + dotProduct * (WIDTH / 4);
         const dVertical = HEIGHT - 100;
         canvasUtil.strokeLine(centerX, dVertical, dHorizontal, dVertical, 'darkorange');
 
         // ピンクと青のベクトルの外積を求める
-        const crossProduct = nx * blueY - ny * blueX;
+        const crossProduct = nx * pinkY - ny * pinkX;
         // 外積の結果を緑の棒グラフで描画
         const cHorizontal = 100;
         const cVertical = centerY - crossProduct * (HEIGHT / 4);
