@@ -21,9 +21,9 @@ window.addEventListener('DOMContentLoaded', () => {
         // ここでの引数は KeyboardEvent オブジェクト
         out.textContent = evt.key;
     }, false);
-    // マウス移動に対するリスナーを設定する例
-    out.addEventListener('mousemove', (evt) => {
-        // ここでの引数は MouseEvent オブジェクト
+    // マウス移動（またはタッチ操作）に対するリスナーを設定する例
+    out.addEventListener('pointermove', (evt) => {
+        // ここでの引数は PointerEvent オブジェクト
         out.textContent = `x: ${evt.clientX}, y: ${evt.clientY}`;
     }, false);
 }, false);

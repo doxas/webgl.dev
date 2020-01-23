@@ -18,8 +18,8 @@ window.addEventListener('DOMContentLoaded', () => {
         height: HEIGHT,
     });
 
-    // Canvas 上でマウスカーソルが動いた際に描画を行う
-    canvasUtil.canvas.addEventListener('mousemove', mouseMove, false);
+    // Canvas 上でマウスカーソルが動いた際（もしくはタッチ操作時）に描画を行う
+    canvasUtil.canvas.addEventListener('pointermove', pointerMove, false);
 
     // 見た目のわかりやすさのためにラインの太さを２倍にしておく
     canvasUtil.lineWidth = 2;
@@ -27,13 +27,13 @@ window.addEventListener('DOMContentLoaded', () => {
     // 初期状態としてグリッドを描画しておく
     drawGrid();
 
-    function mouseMove(evt){
+    function pointerMove(evt){
         // クリアするメソッドを呼ぶ
         canvasUtil.clear();
         // マウスカーソルの Canvas 上での位置を計算するために……
         // Canvas のスクリーン上での位置の情報を取得
         const bound = canvasUtil.canvas.getBoundingClientRect();
-        // 座標は MouseEvent.clientX から Canvas の横位置を引いて求める
+        // 座標は PointerEvent.clientX から Canvas の横位置を引いて求める
         const x = evt.clientX - bound.x;
         const y = evt.clientY - bound.y;
 
