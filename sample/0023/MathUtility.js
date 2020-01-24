@@ -32,7 +32,8 @@ class Vec2 {
     }
     // method -----------------------------------------------------------------
     /**
-     * 値を設定する（このメソッドはインスタンス自身を変更します）
+     * 値を設定する
+     * （このメソッドはインスタンス自身を変更します）
      * @param {number} x - ベクトルの X 要素
      * @param {number} y - ベクトルの Y 要素
      * @return {Vec2} 値設定後の自身のインスタンス
@@ -43,7 +44,8 @@ class Vec2 {
         return this;
     }
     /**
-     * 自身の符号を反転する（このメソッドはインスタンス自身を変更します）
+     * 自身の符号を反転する
+     * （このメソッドはインスタンス自身を変更します）
      * @return {Vec2} 符号反転後の自身のインスタンス
      */
     negate(){
@@ -52,7 +54,8 @@ class Vec2 {
         return this;
     }
     /**
-     * 自身を単位化する（このメソッドはインスタンス自身を変更します）
+     * 自身を単位化する
+     * （このメソッドはインスタンス自身を変更します）
      * @return {Vec2} 単位化後の自身のインスタンス
      */
     normalize(){
@@ -192,6 +195,9 @@ class Vec2 {
      * @return {number} 内積の結果
      */
     dot(v){
+        if(v instanceof Vec2){
+            throw new Error('Vec2.dot: invalid argument');
+        }
         return this.x * v.x + this.y * v.y;
     }
     /**
@@ -200,6 +206,9 @@ class Vec2 {
      * @return {number} 外積の結果
      */
     cross(v){
+        if(v instanceof Vec2){
+            throw new Error('Vec2.cross: invalid argument');
+        }
         return this.x * v.y - this.y * v.x;
     }
 
@@ -247,6 +256,9 @@ class Mat2 {
      * @return {Mat2} スケール行列
      */
     static fromScaling(v){
+        if(v instanceof Vec2){
+            throw new Error('Mat2.fromScaling: invalid argument');
+        }
         return new Mat2(v.x, 0.0, 0.0, v.y);
     }
     /**
@@ -280,6 +292,8 @@ class Mat2 {
     /**
      * 値を設定する
      * （このメソッドはインスタンス自身を変更します）
+     * | m11, m12 |
+     * | m21, m22 |
      * @param {number} m11 - 0 行 0 列の値
      * @param {number} m12 - 0 行 1 列の値
      * @param {number} m21 - 1 行 0 列の値
@@ -359,8 +373,10 @@ class Mat2 {
      * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
      */
     scale(v){
-        const t = this.multiplyByMat2(Mat2.fromScaling(v));
-        this.set(t.m11, t.m12, t.m21, t.m22);
+        if(v instanceof Vec2){
+            throw new Error('Mat2.scale: invalid argument');
+        }
+        this.multiply(Mat2.fromScaling(v));
         return this;
     }
     /**
@@ -370,8 +386,7 @@ class Mat2 {
      * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
      */
     rotate(radian){
-        const t = this.multiplyByMat2(Mat2.fromRotation(radian));
-        this.set(t.m11, t.m12, t.m21, t.m22);
+        this.multiply(Mat2.fromRotation(radian));
         return this;
     }
     /**
@@ -381,6 +396,9 @@ class Mat2 {
      * @return {Mat2} 乗算後の自身のインスタンス
      */
     multiply(m){
+        if(m instanceof Mat2){
+            throw new Error('Mat2.multiply: invalid argument');
+        }
         const t = this.multiplyByMat2(m);
         this.set(t.m11, t.m12, t.m21, t.m22);
         return this;
@@ -392,6 +410,9 @@ class Mat2 {
      * @return {Vec2} 乗算結果を反映した、引数から与えられた Vec2 インスタンス
      */
     applyVec2(v){
+        if(v instanceof Vec2){
+            throw new Error('Mat2.applyVec2: invalid argument');
+        }
         const t = this.multiplyByVec2(v);
         v.set(t.x, t.y);
         return v;
@@ -413,6 +434,9 @@ class Mat2 {
      * @return {Vec2} 乗算結果を反映した新しい Vec2 インスタンス
      */
     multiplyByVec2(v){
+        if(v instanceof Vec2){
+            throw new Error('Mat2.multiplyByVec2: invalid argument');
+        }
         const tx = this.m11 * v.x + this.m12 * v.y;
         const ty = this.m21 * v.x + this.m22 * v.y;
         return new Vec2(tx, ty);
@@ -427,6 +451,9 @@ class Mat2 {
      * @return {Mat2} 乗算結果を反映した新しい Mat2 インスタンス
      */
     multiplyByMat2(m){
+        if(m instanceof Mat2){
+            throw new Error('Mat2.multiplyByMat2: invalid argument');
+        }
         const t11 = this.m11 * m.m11 + this.m12 * m.m21;
         const t12 = this.m11 * m.m12 + this.m12 * m.m22;
         const t21 = this.m21 * m.m11 + this.m22 * m.m21;
@@ -443,11 +470,44 @@ class Mat2 {
      * @return {Mat2} 乗算結果を反映した新しい Mat2 インスタンス
      */
     multiplyToMat2(m){
+        if(m instanceof Mat2){
+            throw new Error('Mat2.multiplyToMat2: invalid argument');
+        }
         const t11 = m.m11 * this.m11 + m.m12 * this.m21;
         const t12 = m.m11 * this.m12 + m.m12 * this.m22;
         const t21 = m.m21 * this.m11 + m.m22 * this.m21;
         const t22 = m.m21 * this.m12 + m.m22 * this.m22;
         return new Mat2(t11, t12, t21, t22);
+    }
+
+    // getter -----------------------------------------------------------------
+    /**
+     * 自身のインスタンスを配列化したもの
+     * @type {Array.<number>}
+     */
+    get array(){
+        return [this.m11, this.m12, this.m21, this.m22];
+    }
+
+    // setter -----------------------------------------------------------------
+    /**
+     * 自身のインスタンスに配列から値を設定する
+     * @type {Array.<number>}
+     */
+    set array(values){
+        if(
+            Array.isArray(values) !== true &&
+            values instanceof Object.getPrototypeOf(Int8Array) !== true
+        ){
+            throw new Error('Mat2.array[set]: invalid type');
+        }
+        if(values.length < 4){
+            throw new Error('Mat2.array[set]: invalid length');
+        }
+        this.m11 = values[0];
+        this.m12 = values[1];
+        this.m21 = values[2];
+        this.m22 = values[3];
     }
 }
 
