@@ -10,25 +10,31 @@ export class MathUtility {
 
 class Vec2 {
     // static method ----------------------------------------------------------
+    /**
+     * 引数 x, y をベクトルとみなして長さ（大きさ）を返す
+     * @param {number} x - ベクトルの X 要素
+     * @param {number} y - ベクトルの Y 要素
+     * @return {number} ベクトルの長さ（大きさ）
+     */
     static calcLength(x, y){
         return Math.sqrt(x * x + y * y);
     }
     // constructor ------------------------------------------------------------
     /**
+     * ２つの要素を持つベクトル（コンストラクタの引数を省略した場合、ゼロベクトルになる）
      * @constructor
-     * @param {number} x - X 座標
-     * @param {number} y - Y 座標
+     * @param {number} [x=0] - ベクトルの X 要素
+     * @param {number} [y=0] - ベクトルの Y 要素
      */
-    constructor(x, y){
-        this.x = 0.0;
-        this.y = 0.0;
-        this.set(x, y);
+    constructor(x = 0.0, y = 0.0){
+        this.x = x;
+        this.y = y;
     }
     // method -----------------------------------------------------------------
     /**
-     * 値を設定する
-     * @param {number} x - X 座標
-     * @param {number} y - Y 座標
+     * 値を設定する（このメソッドはインスタンス自身を変更します）
+     * @param {number} x - ベクトルの X 要素
+     * @param {number} y - ベクトルの Y 要素
      * @return {Vec2} 値設定後の自身のインスタンス
      */
     set(x, y){
@@ -37,7 +43,7 @@ class Vec2 {
         return this;
     }
     /**
-     * 自身の符号を反転する
+     * 自身の符号を反転する（このメソッドはインスタンス自身を変更します）
      * @return {Vec2} 符号反転後の自身のインスタンス
      */
     negate(){
@@ -46,7 +52,7 @@ class Vec2 {
         return this;
     }
     /**
-     * 自身を単位化する
+     * 自身を単位化する（このメソッドはインスタンス自身を変更します）
      * @return {Vec2} 単位化後の自身のインスタンス
      */
     normalize(){
@@ -58,6 +64,106 @@ class Vec2 {
             this.x /= l;
             this.y /= l;
         }
+        return this;
+    }
+    /**
+     * 与えられた Vec2 インスタンスと自身の要素とを加算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Vec2} v - 加算の対象となる Vec2 インスタンス
+     * @return {Vec2} 加算後の自身のインスタンス
+     */
+    add(v){
+        if(v instanceof Vec2){
+            throw new Error('Vec2.add: invalid argument');
+        }
+        this.x += v.x;
+        this.y += v.y;
+        return this;
+    }
+    /**
+     * 与えられたスカラーの値と自身の要素とを加算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {number} s - 加算の対象となるスカラーの値
+     * @return {Vec2} 加算後の自身のインスタンス
+     */
+    addScalar(s){
+        this.x += s;
+        this.y += s;
+        return this;
+    }
+    /**
+     * 与えられた Vec2 インスタンスと自身の要素とを減算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Vec2} v - 減算の対象となる Vec2 インスタンス
+     * @return {Vec2} 減算後の自身のインスタンス
+     */
+    sub(v){
+        if(v instanceof Vec2){
+            throw new Error('Vec2.sub: invalid argument');
+        }
+        this.x -= v.x;
+        this.y -= v.y;
+        return this;
+    }
+    /**
+     * 与えられたスカラーの値と自身の要素とを減算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {number} s - 減算の対象となるスカラーの値
+     * @return {Vec2} 減算後の自身のインスタンス
+     */
+    subScalar(s){
+        this.x -= s;
+        this.y -= s;
+        return this;
+    }
+    /**
+     * 与えられた Vec2 インスタンスと自身の要素とを乗算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Vec2} v - 乗算の対象となる Vec2 インスタンス
+     * @return {Vec2} 乗算後の自身のインスタンス
+     */
+    multiply(v){
+        if(v instanceof Vec2){
+            throw new Error('Vec2.multiply: invalid argument');
+        }
+        this.x *= v.x;
+        this.y *= v.y;
+        return this;
+    }
+    /**
+     * 与えられたスカラーの値と自身の要素とを乗算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {number} s - 乗算の対象となるスカラーの値
+     * @return {Vec2} 乗算後の自身のインスタンス
+     */
+    multiplyScalar(s){
+        this.x *= s;
+        this.y *= s;
+        return this;
+    }
+    /**
+     * 与えられた Vec2 インスタンスと自身の要素とを除算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Vec2} v - 除算の対象となる Vec2 インスタンス
+     * @return {Vec2} 除算後の自身のインスタンス
+     */
+    divide(v){
+        if(v instanceof Vec2){
+            throw new Error('Vec2.divide: invalid argument');
+        }
+        this.x /= v.x;
+        this.y /= v.y;
+        return this;
+    }
+    /**
+     * 与えられたスカラーの値と自身の要素とを除算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {number} s - 除算の対象となるスカラーの値
+     * @return {Vec2} 除算後の自身のインスタンス
+     */
+    divideScalar(s){
+        this.x /= s;
+        this.y /= s;
         return this;
     }
     /**
@@ -79,98 +185,6 @@ class Vec2 {
         const x = this.x - v.x;
         const y = this.y - v.y;
         return Vec2.calcLength(x, y);
-    }
-    /**
-     * 与えられた Vec2 インスタンスと自身の要素とを加算する
-     * @param {Vec2} v - 加算の対象となる Vec2 インスタンス
-     * @return {Vec2} 加算後の自身のインスタンス
-     */
-    add(v){
-        if(v instanceof Vec2){
-            throw new Error('Vec2.add: invalid argument');
-        }
-        this.x += v.x;
-        this.y += v.y;
-        return this;
-    }
-    /**
-     * 与えられたスカラーの値と自身の要素とを加算する
-     * @param {number} s - 加算の対象となるスカラーの値
-     * @return {Vec2} 加算後の自身のインスタンス
-     */
-    addScalar(s){
-        this.x += s;
-        this.y += s;
-        return this;
-    }
-    /**
-     * 与えられた Vec2 インスタンスと自身の要素とを減算する
-     * @param {Vec2} v - 減算の対象となる Vec2 インスタンス
-     * @return {Vec2} 減算後の自身のインスタンス
-     */
-    sub(v){
-        if(v instanceof Vec2){
-            throw new Error('Vec2.sub: invalid argument');
-        }
-        this.x -= v.x;
-        this.y -= v.y;
-        return this;
-    }
-    /**
-     * 与えられたスカラーの値と自身の要素とを減算する
-     * @param {number} s - 減算の対象となるスカラーの値
-     * @return {Vec2} 減算後の自身のインスタンス
-     */
-    subScalar(s){
-        this.x -= s;
-        this.y -= s;
-        return this;
-    }
-    /**
-     * 与えられた Vec2 インスタンスと自身の要素とを乗算する
-     * @param {Vec2} v - 乗算の対象となる Vec2 インスタンス
-     * @return {Vec2} 乗算後の自身のインスタンス
-     */
-    multiply(v){
-        if(v instanceof Vec2){
-            throw new Error('Vec2.multiply: invalid argument');
-        }
-        this.x *= v.x;
-        this.y *= v.y;
-        return this;
-    }
-    /**
-     * 与えられたスカラーの値と自身の要素とを乗算する
-     * @param {number} s - 乗算の対象となるスカラーの値
-     * @return {Vec2} 乗算後の自身のインスタンス
-     */
-    multiplyScalar(s){
-        this.x *= s;
-        this.y *= s;
-        return this;
-    }
-    /**
-     * 与えられた Vec2 インスタンスと自身の要素とを除算する
-     * @param {Vec2} v - 除算の対象となる Vec2 インスタンス
-     * @return {Vec2} 除算後の自身のインスタンス
-     */
-    divide(v){
-        if(v instanceof Vec2){
-            throw new Error('Vec2.divide: invalid argument');
-        }
-        this.x /= v.x;
-        this.y /= v.y;
-        return this;
-    }
-    /**
-     * 与えられたスカラーの値と自身の要素とを除算する
-     * @param {number} s - 除算の対象となるスカラーの値
-     * @return {Vec2} 除算後の自身のインスタンス
-     */
-    divideScalar(s){
-        this.x /= s;
-        this.y /= s;
-        return this;
     }
     /**
      * 与えられた Vec2 インスタンスと自身との内積の結果を返す
@@ -264,14 +278,15 @@ class Mat2 {
     }
     // method -----------------------------------------------------------------
     /**
-     * 値を設定する（このメソッドはインスタンス自身を変更します）
+     * 値を設定する
+     * （このメソッドはインスタンス自身を変更します）
      * @param {number} m11 - 0 行 0 列の値
      * @param {number} m12 - 0 行 1 列の値
      * @param {number} m21 - 1 行 0 列の値
      * @param {number} m22 - 1 行 1 列の値
      * @return {Mat2} 値設定後の自身のインスタンス
      */
-    set(m11 = 0.0, m12 = 0.0, m21 = 0.0, m22 = 0.0){
+    set(m11, m12, m21, m22){
         this.m11 = m11;
         this.m12 = m12;
         this.m21 = m21;
@@ -279,7 +294,8 @@ class Mat2 {
         return this;
     }
     /**
-     * 自身をゼロ行列にする（このメソッドはインスタンス自身を変更します）
+     * 自身をゼロ行列にする
+     * （このメソッドはインスタンス自身を変更します）
      * | 0.0, 0.0 |
      * | 0.0, 0.0 |
      * @return {Mat2} 値設定後の自身のインスタンス
@@ -292,7 +308,8 @@ class Mat2 {
         return this;
     }
     /**
-     * 自身を単位行列にする（このメソッドはインスタンス自身を変更します）
+     * 自身を単位行列にする
+     * （このメソッドはインスタンス自身を変更します）
      * | 1.0, 0.0 |
      * | 0.0, 1.0 |
      * @return {Mat2} 値設定後の自身のインスタンス
@@ -305,7 +322,8 @@ class Mat2 {
         return this;
     }
     /**
-     * 自身を転置行列にする（このメソッドはインスタンス自身を変更します）
+     * 自身を転置行列にする
+     * （このメソッドはインスタンス自身を変更します）
      * @return {Mat2} 値設定後の自身のインスタンス
      */
     transpose(){
@@ -315,7 +333,8 @@ class Mat2 {
         return this;
     }
     /**
-     * 自身を逆行列に変換する（このメソッドはインスタンス自身を変更します）
+     * 自身を逆行列に変換する
+     * （このメソッドはインスタンス自身を変更します）
      * @return {Mat2} 値設定後の自身のインスタンス
      */
     inverse(){
@@ -334,29 +353,55 @@ class Mat2 {
         return this;
     }
     /**
+     * 与えられた Vec2 インスタンスをスケール値として自身に反映する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Vec2} v - スケール値を格納した Vec2 インスタンス
+     * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
+     */
+    scale(v){
+        const t = this.multiplyByMat2(Mat2.fromScaling(v));
+        this.set(t.m11, t.m12, t.m21, t.m22);
+        return this;
+    }
+    /**
+     * 与えられたラジアンを回転量として自身に反映する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {number} radian - 回転量を表すラジアン
+     * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
+     */
+    rotate(radian){
+        const t = this.multiplyByMat2(Mat2.fromRotation(radian));
+        this.set(t.m11, t.m12, t.m21, t.m22);
+        return this;
+    }
+    /**
+     * 与えられた Mat2 インスタンスを自身に乗算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Mat2} m - 自身に乗算する Mat2 のインスタンス
+     * @return {Mat2} 乗算後の自身のインスタンス
+     */
+    multiply(m){
+        const t = this.multiplyByMat2(m);
+        this.set(t.m11, t.m12, t.m21, t.m22);
+        return this;
+    }
+    /**
+     * 与えられた Vec2 インスタンスを自身に乗算し、その結果を与えられた Vec2 インスタンスに反映する
+     * （このメソッドは引数から受け取った Vec2 インスタンスを変更します）
+     * @param {Vec2} v - 自身に乗算し、その結果を反映させる Vec2 インスタンス
+     * @return {Vec2} 乗算結果を反映した、引数から与えられた Vec2 インスタンス
+     */
+    applyVec2(v){
+        const t = this.multiplyByVec2(v);
+        v.set(t.x, t.y);
+        return v;
+    }
+    /**
      * 自身の値を複製した新しい Mat2 インスタンスを返す
      * @return {Mat2} 自身と同じ値を持つ Mat2 インスタンス
      */
     clone(){
         return new Mat2(this.m11, this.m12, this.m21, this.m22);
-    }
-    /**
-     * 与えられた Vec2 インスタンスをスケール値として自身に反映した結果を返す
-     * @param {Vec2} v - スケール値を格納した Vec2 インスタンス
-     * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
-     */
-    scale(v){
-        const t = Mat2.fromScaling(v);
-        return this.multiplyByMat2(t);
-    }
-    /**
-     * 与えられたラジアンを回転量として自身に反映した結果を返す
-     * @param {number} radian - 回転量を表すラジアン
-     * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
-     */
-    rotate(radian){
-        const t = Mat2.fromRotation(radian);
-        return this.multiplyByMat2(t);
     }
     /**
      * 与えられた Vec2 インスタンスを自身に乗算した結果を返す
