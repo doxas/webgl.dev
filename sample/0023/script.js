@@ -21,7 +21,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const temp0 = new MathUtility.Mat2(0, 1, 2, 3);
     const temp1 = new MathUtility.Mat2(4, 5, 6, 7);
-    console.log(temp0.multiply(temp1));
+    const temp2 = new MathUtility.Vec2(8, 9);
+    console.log(temp0.applyVec2(temp2));
+    console.log(temp0.applyMat2(temp1));
+    console.log(temp0.multiplyToMat2(temp1));
 
     // Shift キー押下で角度を固定できるようにするための処理
     let latestAngle = 0;

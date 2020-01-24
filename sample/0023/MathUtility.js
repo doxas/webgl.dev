@@ -318,24 +318,50 @@ class Mat2 {
         return new Mat2(this.m11, this.m12, this.m21, this.m22);
     }
     /**
-     * 与えられた Mat2 インスタンスを自身に乗算する
+     * 与えられた Vec2 インスタンスを自身に乗算した結果を返す
+     *     this        arg
+     * | m11, m12 |   | x |
+     * |          | x |   |
+     * | m21, m22 |   | y |
+     * @param {Vec2} v - 乗算する Vec2 インスタンス
+     * @return {Vec2} 乗算結果を反映した新しい Vec2 インスタンス
+     */
+    multiplyByVec2(v){
+        const tx = this.m11 * v.x + this.m12 * v.y;
+        const ty = this.m21 * v.x + this.m22 * v.y;
+        return new Vec2(tx, ty);
+    }
+    /**
+     * 与えられた Mat2 インスタンスを自身に乗算した結果を返す
      *     this           arg
      * | m11, m12 |   | a11, a12 |
      * |          | x |          |
      * | m21, m22 |   | a21, a22 |
      * @param {Mat2} m - 乗算する Mat2 インスタンス
-     * @return {Mat2} 乗算後の自身のインスタンス
+     * @return {Mat2} 乗算結果を反映した新しい Mat2 インスタンス
      */
     multiplyByMat2(m){
         const t11 = this.m11 * m.m11 + this.m12 * m.m21;
         const t12 = this.m11 * m.m12 + this.m12 * m.m22;
         const t21 = this.m21 * m.m11 + this.m22 * m.m21;
         const t22 = this.m21 * m.m12 + this.m22 * m.m22;
-        this.m11 = t11;
-        this.m12 = t12;
-        this.m21 = t21;
-        this.m22 = t22;
-        return this;
+        return new Mat2(t11, t12, t21, t22);
+    }
+    /**
+     * 与えられた Mat2 インスタンスに対して自身を乗算した結果を返す
+     *     arg            this
+     * | a11, a12 |   | m11, m12 |
+     * |          | x |          |
+     * | a21, a22 |   | m21, m22 |
+     * @param {Mat2} m - 乗算の対象となる Mat2 インスタンス
+     * @return {Mat2} 乗算結果を反映した新しい Mat2 インスタンス
+     */
+    multiplyToMat2(m){
+        const t11 = m.m11 * this.m11 + m.m12 * this.m21;
+        const t12 = m.m11 * this.m12 + m.m12 * this.m22;
+        const t21 = m.m21 * this.m11 + m.m22 * this.m21;
+        const t22 = m.m21 * this.m12 + m.m22 * this.m22;
+        return new Mat2(t11, t12, t21, t22);
     }
 }
 
