@@ -1,13 +1,27 @@
 
+/**
+ * 算術クラスを束ねたユーティリティクラス
+ * @class
+ */
 export class MathUtility {
+    /**
+     * @type {Vec2}
+     */
     static get Vec2(){
         return Vec2;
     }
+    /**
+     * @type {Mat2}
+     */
     static get Mat2(){
         return Mat2;
     }
 }
 
+/**
+ * ２つの要素を持つベクトルを扱うクラス
+ * @class
+ */
 class Vec2 {
     // static method ----------------------------------------------------------
     /**
@@ -76,7 +90,7 @@ class Vec2 {
      * @return {Vec2} 加算後の自身のインスタンス
      */
     add(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Vec2.add: invalid argument');
         }
         this.x += v.x;
@@ -101,7 +115,7 @@ class Vec2 {
      * @return {Vec2} 減算後の自身のインスタンス
      */
     sub(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Vec2.sub: invalid argument');
         }
         this.x -= v.x;
@@ -126,7 +140,7 @@ class Vec2 {
      * @return {Vec2} 乗算後の自身のインスタンス
      */
     multiply(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Vec2.multiply: invalid argument');
         }
         this.x *= v.x;
@@ -151,7 +165,7 @@ class Vec2 {
      * @return {Vec2} 除算後の自身のインスタンス
      */
     divide(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Vec2.divide: invalid argument');
         }
         this.x /= v.x;
@@ -182,7 +196,7 @@ class Vec2 {
      * @return {number} 引数に与えられた Vec2 インスタンスとの距離
      */
     distance(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Vec2.distance: invalid argument');
         }
         const x = this.x - v.x;
@@ -195,7 +209,7 @@ class Vec2 {
      * @return {number} 内積の結果
      */
     dot(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Vec2.dot: invalid argument');
         }
         return this.x * v.x + this.y * v.y;
@@ -206,7 +220,7 @@ class Vec2 {
      * @return {number} 外積の結果
      */
     cross(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Vec2.cross: invalid argument');
         }
         return this.x * v.y - this.y * v.x;
@@ -248,6 +262,10 @@ class Vec2 {
     }
 }
 
+/**
+ * 2x2 の正方行列を扱うクラス
+ * @class
+ */
 class Mat2 {
     // static method ----------------------------------------------------------
     /**
@@ -256,7 +274,7 @@ class Mat2 {
      * @return {Mat2} スケール行列
      */
     static fromScaling(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Mat2.fromScaling: invalid argument');
         }
         return new Mat2(v.x, 0.0, 0.0, v.y);
@@ -373,7 +391,7 @@ class Mat2 {
      * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
      */
     scale(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Mat2.scale: invalid argument');
         }
         this.multiply(Mat2.fromScaling(v));
@@ -396,7 +414,7 @@ class Mat2 {
      * @return {Mat2} 乗算後の自身のインスタンス
      */
     multiply(m){
-        if(m instanceof Mat2){
+        if(m instanceof Mat2 !== true){
             throw new Error('Mat2.multiply: invalid argument');
         }
         const t = this.multiplyByMat2(m);
@@ -410,7 +428,7 @@ class Mat2 {
      * @return {Vec2} 乗算結果を反映した、引数から与えられた Vec2 インスタンス
      */
     applyVec2(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Mat2.applyVec2: invalid argument');
         }
         const t = this.multiplyByVec2(v);
@@ -434,7 +452,7 @@ class Mat2 {
      * @return {Vec2} 乗算結果を反映した新しい Vec2 インスタンス
      */
     multiplyByVec2(v){
-        if(v instanceof Vec2){
+        if(v instanceof Vec2 !== true){
             throw new Error('Mat2.multiplyByVec2: invalid argument');
         }
         const tx = this.m11 * v.x + this.m12 * v.y;
@@ -451,7 +469,7 @@ class Mat2 {
      * @return {Mat2} 乗算結果を反映した新しい Mat2 インスタンス
      */
     multiplyByMat2(m){
-        if(m instanceof Mat2){
+        if(m instanceof Mat2 !== true){
             throw new Error('Mat2.multiplyByMat2: invalid argument');
         }
         const t11 = this.m11 * m.m11 + this.m12 * m.m21;
@@ -470,7 +488,7 @@ class Mat2 {
      * @return {Mat2} 乗算結果を反映した新しい Mat2 インスタンス
      */
     multiplyToMat2(m){
-        if(m instanceof Mat2){
+        if(m instanceof Mat2 !== true){
             throw new Error('Mat2.multiplyToMat2: invalid argument');
         }
         const t11 = m.m11 * this.m11 + m.m12 * this.m21;
