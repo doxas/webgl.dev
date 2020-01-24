@@ -9,10 +9,11 @@ export class MathUtility {
 }
 
 class Vec2 {
-    // static method
+    // static method ----------------------------------------------------------
     static calcLength(x, y){
         return Math.sqrt(x * x + y * y);
     }
+    // constructor ------------------------------------------------------------
     /**
      * @constructor
      * @param {number} x - X 座標
@@ -23,6 +24,7 @@ class Vec2 {
         this.y = 0.0;
         this.set(x, y);
     }
+    // method -----------------------------------------------------------------
     /**
      * 値を設定する
      * @param {number} x - X 座標
@@ -224,6 +226,26 @@ class Vec2 {
 }
 
 class Mat2 {
+    // static method ----------------------------------------------------------
+    /**
+     * スケール値を格納した Vec2 インスタンスからスケール行列を生成する
+     * @param {Vec2} v - スケール値を格納した Vec2 インスタンス
+     * @return {Mat2} スケール行列
+     */
+    static fromScaling(v){
+        return new Mat2(v.x, 0.0, 0.0, v.y);
+    }
+    /**
+     * ラジアンから回転行列を生成する
+     * @param {number} radian - 回転量を表すラジアン
+     * @return {Mat2} 回転行列
+     */
+    static fromRotation(radian){
+        const s = Math.sin(radian);
+        const c = Math.cos(radian);
+        return new Mat2(c, -s, s, c);
+    }
+    // constructor ------------------------------------------------------------
     /**
      * 2x2 の正方行列（コンストラクタの引数を省略した場合、ゼロ行列になる）
      * | m11, m12 |
@@ -240,8 +262,9 @@ class Mat2 {
         this.m21 = m21;
         this.m22 = m22;
     }
+    // method -----------------------------------------------------------------
     /**
-     * 値を設定する
+     * 値を設定する（このメソッドはインスタンス自身を変更します）
      * @param {number} m11 - 0 行 0 列の値
      * @param {number} m12 - 0 行 1 列の値
      * @param {number} m21 - 1 行 0 列の値
@@ -256,7 +279,7 @@ class Mat2 {
         return this;
     }
     /**
-     * 自身をゼロ行列にする
+     * 自身をゼロ行列にする（このメソッドはインスタンス自身を変更します）
      * | 0.0, 0.0 |
      * | 0.0, 0.0 |
      * @return {Mat2} 値設定後の自身のインスタンス
@@ -269,7 +292,7 @@ class Mat2 {
         return this;
     }
     /**
-     * 自身を単位行列にする
+     * 自身を単位行列にする（このメソッドはインスタンス自身を変更します）
      * | 1.0, 0.0 |
      * | 0.0, 1.0 |
      * @return {Mat2} 値設定後の自身のインスタンス
@@ -282,7 +305,7 @@ class Mat2 {
         return this;
     }
     /**
-     * 自身を転置行列にする
+     * 自身を転置行列にする（このメソッドはインスタンス自身を変更します）
      * @return {Mat2} 値設定後の自身のインスタンス
      */
     transpose(){
@@ -292,7 +315,7 @@ class Mat2 {
         return this;
     }
     /**
-     * 自身を逆行列に変換する
+     * 自身を逆行列に変換する（このメソッドはインスタンス自身を変更します）
      * @return {Mat2} 値設定後の自身のインスタンス
      */
     inverse(){
@@ -300,9 +323,9 @@ class Mat2 {
         const t1 = this.m12;
         const t2 = this.m21;
         const t3 = this.m22;
-        const d = t0 * t3 - t2 * t1;
+        const d = t0 * t3 - t1 * t2;
         if(d === 0.0){
-            throw new Error('Mat2.inverse: this matrix is zero matrix');
+            throw new Error('Mat2.inverse: determinant is zero');
         }
         this.m11 =  t3 / d;
         this.m12 = -t1 / d;
@@ -316,6 +339,24 @@ class Mat2 {
      */
     clone(){
         return new Mat2(this.m11, this.m12, this.m21, this.m22);
+    }
+    /**
+     * 与えられた Vec2 インスタンスをスケール値として自身に反映した結果を返す
+     * @param {Vec2} v - スケール値を格納した Vec2 インスタンス
+     * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
+     */
+    scale(v){
+        const t = Mat2.fromScaling(v);
+        return this.multiplyByMat2(t);
+    }
+    /**
+     * 与えられたラジアンを回転量として自身に反映した結果を返す
+     * @param {number} radian - 回転量を表すラジアン
+     * @return {Mat2} 計算結果を反映した新しい Mat2 インスタンス
+     */
+    rotate(radian){
+        const t = Mat2.fromRotation(radian);
+        return this.multiplyByMat2(t);
     }
     /**
      * 与えられた Vec2 インスタンスを自身に乗算した結果を返す
