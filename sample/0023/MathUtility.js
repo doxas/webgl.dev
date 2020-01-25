@@ -295,10 +295,10 @@ class Mat2 {
      * | m11, m12 |
      * | m21, m22 |
      * @constructor
-     * @param {number} [m11=0] - 0 行 0 列の値
-     * @param {number} [m12=0] - 0 行 1 列の値
-     * @param {number} [m21=0] - 1 行 0 列の値
-     * @param {number} [m22=0] - 1 行 1 列の値
+     * @param {number} [m11=0] - 1 行 1 列の値
+     * @param {number} [m12=0] - 1 行 2 列の値
+     * @param {number} [m21=0] - 2 行 1 列の値
+     * @param {number} [m22=0] - 2 行 2 列の値
      */
     constructor(m11 = 0.0, m12 = 0.0, m21 = 0.0, m22 = 0.0){
         this.m11 = m11;
@@ -312,10 +312,10 @@ class Mat2 {
      * （このメソッドはインスタンス自身を変更します）
      * | m11, m12 |
      * | m21, m22 |
-     * @param {number} m11 - 0 行 0 列の値
-     * @param {number} m12 - 0 行 1 列の値
-     * @param {number} m21 - 1 行 0 列の値
-     * @param {number} m22 - 1 行 1 列の値
+     * @param {number} m11 - 1 行 1 列の値
+     * @param {number} m12 - 1 行 2 列の値
+     * @param {number} m21 - 2 行 1 列の値
+     * @param {number} m22 - 2 行 2 列の値
      * @return {Mat2} 値設定後の自身のインスタンス
      */
     set(m11, m12, m21, m22){
