@@ -11,10 +11,22 @@ export class MathUtility {
         return Vec2;
     }
     /**
+     * @type {Vec3}
+     */
+    static get Vec3(){
+        return Vec3;
+    }
+    /**
      * @type {Mat2}
      */
     static get Mat2(){
         return Mat2;
+    }
+    /**
+     * @type {Mat3}
+     */
+    static get Mat3(){
+        return Mat3;
     }
 }
 
@@ -787,6 +799,336 @@ class Mat2 {
         }
         if(values.length < 4){
             throw new Error('Mat2.array[set]: invalid length');
+        }
+        this.m11 = values[0];
+        this.m12 = values[1];
+        this.m21 = values[2];
+        this.m22 = values[3];
+    }
+}
+
+/**
+ * 3x3 の正方行列を扱うクラス
+ * @class
+ */
+class Mat3 {
+    // static method ----------------------------------------------------------
+    /**
+     * スケール値を格納した Vec3 インスタンスからスケール行列を生成する
+     * @param {Vec3} v - スケール値を格納した Vec3 インスタンス
+     * @return {Mat3} スケール行列
+     */
+    static fromScaling(v){
+        if(v instanceof Vec3 !== true){
+            throw new Error('Mat3.fromScaling: invalid argument');
+        }
+        return new Mat3(v.x, 0.0, 0.0, 0.0, v.y, 0.0, 0.0, 0.0, v.z);
+    }
+    /**
+     * ラジアンから回転行列を生成する
+     * @param {number} radian - 回転量を表すラジアン
+     * @return {Mat3} 回転行列
+     */
+    static fromRotation(radian){
+        const s = Math.sin(radian);
+        const c = Math.cos(radian);
+        return new Mat3(c, -s, 0.0, s, c, 0.0, 0.0, 0.0, 1.0);
+    }
+    /**
+     * 移動量を格納した Vec2 インスタンスから平行移動する行列を生成する
+     * @param {Vec2} v - 移動量を格納した Vec2 インスタンス
+     * @return {Mat3} 回転行列
+     */
+    static fromTranslation(v){
+        if(v instanceof Vec2 !== true){
+            throw new Error('Mat3.fromTranslation: invalid argument');
+        }
+        return new Mat3(1.0, 0.0, v.x, 0.0, 1.0, v.y, 0.0, 0.0, 1.0);
+    }
+    // constructor ------------------------------------------------------------
+    /**
+     * 3x3 の正方行列（コンストラクタの引数を省略した場合、ゼロ行列になる）
+     * | m11, m12, m13 |
+     * | m21, m22, m23 |
+     * | m31, m32, m33 |
+     * @constructor
+     * @param {number} [m11=0] - 1 行 1 列の値
+     * @param {number} [m12=0] - 1 行 2 列の値
+     * @param {number} [m13=0] - 1 行 3 列の値
+     * @param {number} [m21=0] - 2 行 1 列の値
+     * @param {number} [m22=0] - 2 行 2 列の値
+     * @param {number} [m23=0] - 2 行 3 列の値
+     * @param {number} [m31=0] - 3 行 1 列の値
+     * @param {number} [m32=0] - 3 行 2 列の値
+     * @param {number} [m33=0] - 3 行 3 列の値
+     */
+    constructor(m11 = 0.0, m12 = 0.0, m13 = 0.0, m21 = 0.0, m22 = 0.0, m23 = 0.0, m31 = 0.0, m32 = 0.0, m33 = 0.0){
+        this.m11 = m11;
+        this.m12 = m12;
+        this.m13 = m13;
+        this.m21 = m21;
+        this.m22 = m22;
+        this.m23 = m23;
+        this.m31 = m31;
+        this.m32 = m32;
+        this.m33 = m33;
+    }
+    // method -----------------------------------------------------------------
+    /**
+     * 値を設定する
+     * （このメソッドはインスタンス自身を変更します）
+     * | m11, m12, m13 |
+     * | m21, m22, m23 |
+     * | m31, m32, m33 |
+     * @param {number} m11 - 1 行 1 列の値
+     * @param {number} m12 - 1 行 2 列の値
+     * @param {number} m13 - 1 行 3 列の値
+     * @param {number} m21 - 2 行 1 列の値
+     * @param {number} m22 - 2 行 2 列の値
+     * @param {number} m23 - 2 行 3 列の値
+     * @param {number} m31 - 3 行 1 列の値
+     * @param {number} m32 - 3 行 2 列の値
+     * @param {number} m33 - 3 行 3 列の値
+     * @return {Mat3} 値設定後の自身のインスタンス
+     */
+    set(m11, m12, m13, m21, m22, m23, m31, m32, m33){
+        this.m11 = m11;
+        this.m12 = m12;
+        this.m13 = m13;
+        this.m21 = m21;
+        this.m22 = m22;
+        this.m23 = m23;
+        this.m31 = m31;
+        this.m32 = m32;
+        this.m33 = m33;
+        return this;
+    }
+    /**
+     * 自身をゼロ行列にする
+     * （このメソッドはインスタンス自身を変更します）
+     * | 0.0, 0.0, 0.0 |
+     * | 0.0, 0.0, 0.0 |
+     * | 0.0, 0.0, 0.0 |
+     * @return {Mat3} 値設定後の自身のインスタンス
+     */
+    zero(){
+        this.m11 = 0.0;
+        this.m12 = 0.0;
+        this.m13 = 0.0;
+        this.m21 = 0.0;
+        this.m22 = 0.0;
+        this.m23 = 0.0;
+        this.m31 = 0.0;
+        this.m32 = 0.0;
+        this.m33 = 0.0;
+        return this;
+    }
+    /**
+     * 自身を単位行列にする
+     * （このメソッドはインスタンス自身を変更します）
+     * | 1.0, 0.0, 0.0 |
+     * | 0.0, 1.0, 0.0 |
+     * | 0.0, 0.0, 1.0 |
+     * @return {Mat3} 値設定後の自身のインスタンス
+     */
+    identity(){
+        this.m11 = 1.0;
+        this.m12 = 0.0;
+        this.m13 = 0.0;
+        this.m21 = 0.0;
+        this.m22 = 1.0;
+        this.m23 = 0.0;
+        this.m31 = 0.0;
+        this.m32 = 0.0;
+        this.m33 = 1.0;
+        return this;
+    }
+    /**
+     * 自身を転置行列にする
+     * （このメソッドはインスタンス自身を変更します）
+     * @return {Mat3} 値設定後の自身のインスタンス
+     */
+    transpose(){
+        const t12 = this.m12;
+        const t13 = this.m13;
+        const t23 = this.m23;
+        this.m12 = this.m21;
+        this.m13 = this.m31;
+        this.m23 = this.m32;
+        this.m21 = t12;
+        this.m31 = t13;
+        this.m32 = t23;
+        return this;
+    }
+    /**
+     * 自身を逆行列に変換する
+     * （このメソッドはインスタンス自身を変更します）
+     * @return {Mat3} 値設定後の自身のインスタンス
+     */
+    inverse(){
+        const a11 = this.m11, a12 = this.m21, a13 = this.m31;
+        const a21 = this.m12, a22 = this.m22, a23 = this.m32;
+        const a31 = this.m13, a32 = this.m23, a33 = this.m33;
+        const t1 =  a33 * a22 - a23 * a32;
+        const t2 = -a33 * a21 + a23 * a31;
+        const t3 =  a32 * a21 - a22 * a31;
+        const d = a11 * t1 + a12 * t2 + a13 * t3;
+        if(d === 0.0){
+            throw new Error('Mat3.inverse: determinant is zero');
+        }
+        this.m11 = t1 / d;
+        this.m12 = t2 / d;
+        this.m13 = t3 / d;
+        this.m21 = (-a33 * a12 + a13 * a32) / d;
+        this.m22 = ( a33 * a11 - a13 * a31) / d;
+        this.m23 = (-a32 * a11 + a12 * a31) / d;
+        this.m31 = ( a23 * a12 - a13 * a22) / d;
+        this.m32 = (-a23 * a11 + a13 * a21) / d;
+        this.m33 = ( a22 * a11 - a12 * a21) / d;
+        return this;
+    }
+    /**
+     * 与えられた Vec3 インスタンスをスケール値として自身に反映する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Vec3} v - スケール値を格納した Vec3 インスタンス
+     * @return {Mat3} 計算結果を反映した新しい Mat3 インスタンス
+     */
+    scale(v){
+        if(v instanceof Vec3 !== true){
+            throw new Error('Mat3.scale: invalid argument');
+        }
+        this.multiply(Mat3.fromScaling(v));
+        return this;
+    }
+    /**
+     * 与えられたラジアンを回転量として自身に反映する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {number} radian - 回転量を表すラジアン
+     * @return {Mat3} 計算結果を反映した新しい Mat3 インスタンス
+     */
+    rotate(radian){
+        this.multiply(Mat3.fromRotation(radian));
+        return this;
+    }
+    /**
+     * 与えられた Mat3 インスタンスを自身に乗算する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Mat3} m - 自身に乗算する Mat3 のインスタンス
+     * @return {Mat3} 乗算後の自身のインスタンス
+     */
+    multiply(m){
+        if(m instanceof Mat3 !== true){
+            throw new Error('Mat3.multiply: invalid argument');
+        }
+        const t = this.multiplyByMat3(m);
+        this.set(t.m11, t.m12, t.m13, t.m21, t.m22, t.m23, t.m31, t.m32, t.m33);
+        return this;
+    }
+    /**
+     * 与えられた Vec3 インスタンスを自身に乗算し、その結果を与えられた Vec3 インスタンスに反映する
+     * （このメソッドは引数から受け取った Vec3 インスタンスを変更します）
+     * @param {Vec3} v - 自身に乗算し、その結果を反映させる Vec3 インスタンス
+     * @return {Vec3} 乗算結果を反映した、引数から与えられた Vec3 インスタンス
+     */
+    applyVec3(v){
+        if(v instanceof Vec3 !== true){
+            throw new Error('Mat3.applyVec3: invalid argument');
+        }
+        const t = this.multiplyByVec3(v);
+        v.set(t.x, t.y);
+        return v;
+    }
+    /**
+     * 自身の値を複製した新しい Mat3 インスタンスを返す
+     * @return {Mat3} 自身と同じ値を持つ Mat3 インスタンス
+     */
+    clone(){
+        return new Mat3(this.m11, this.m12, this.m13, this.m21, this.m22, this.m23, this.m31, this.m32, this.m33);
+    }
+    /**
+     * 与えられた Vec3 インスタンスを自身に乗算した結果を返す
+     *     this        arg
+     * | m11, m12 |   | x |
+     * |          | x |   |
+     * | m21, m22 |   | y |
+     * @param {Vec3} v - 乗算する Vec3 インスタンス
+     * @return {Vec3} 乗算結果を反映した新しい Vec3 インスタンス
+     */
+    multiplyByVec3(v){
+        if(v instanceof Vec3 !== true){
+            throw new Error('Mat3.multiplyByVec3: invalid argument');
+        }
+        const tx = this.m11 * v.x + this.m12 * v.y;
+        const ty = this.m21 * v.x + this.m22 * v.y;
+        return new Vec3(tx, ty);
+    }
+    /**
+     * 与えられた Mat3 インスタンスを自身に乗算した結果を返す
+     *     this           arg
+     * | m11, m12 |   | a11, a12 |
+     * |          | x |          |
+     * | m21, m22 |   | a21, a22 |
+     * @param {Mat3} m - 乗算する Mat3 インスタンス
+     * @return {Mat3} 乗算結果を反映した新しい Mat3 インスタンス
+     */
+    multiplyByMat3(m){
+        if(m instanceof Mat3 !== true){
+            throw new Error('Mat3.multiplyByMat3: invalid argument');
+        }
+        const t11 = this.m11 * m.m11 + this.m12 * m.m21 + this.m13 * m.m31;
+        const t12 = this.m11 * m.m12 + this.m12 * m.m22 + this.m13 * m.m32;
+        const t13 = this.m11 * m.m13 + this.m12 * m.m23 + this.m13 * m.m33;
+        const t21 = this.m21 * m.m11 + this.m22 * m.m21 + this.m23 * m.m31;
+        const t22 = this.m21 * m.m12 + this.m22 * m.m22 + this.m23 * m.m32;
+        const t23 = this.m21 * m.m13 + this.m22 * m.m23 + this.m23 * m.m33;
+        const t31 = this.m31 * m.m11 + this.m32 * m.m21 + this.m33 * m.m31;
+        const t32 = this.m31 * m.m12 + this.m32 * m.m22 + this.m33 * m.m32;
+        const t33 = this.m31 * m.m13 + this.m32 * m.m23 + this.m33 * m.m33;
+        return new Mat3(t11, t12, t13, t21, t22, t23, t31, t32, t33);
+    }
+    /**
+     * 与えられた Mat3 インスタンスに対して自身を乗算した結果を返す
+     *     arg            this
+     * | a11, a12 |   | m11, m12 |
+     * |          | x |          |
+     * | a21, a22 |   | m21, m22 |
+     * @param {Mat3} m - 乗算の対象となる Mat3 インスタンス
+     * @return {Mat3} 乗算結果を反映した新しい Mat3 インスタンス
+     */
+    multiplyToMat3(m){
+        if(m instanceof Mat3 !== true){
+            throw new Error('Mat3.multiplyToMat3: invalid argument');
+        }
+        const t11 = m.m11 * this.m11 + m.m12 * this.m21;
+        const t12 = m.m11 * this.m12 + m.m12 * this.m22;
+        const t21 = m.m21 * this.m11 + m.m22 * this.m21;
+        const t22 = m.m21 * this.m12 + m.m22 * this.m22;
+        return new Mat3(t11, t12, t21, t22);
+    }
+
+    // getter -----------------------------------------------------------------
+    /**
+     * 自身のインスタンスを配列化したもの
+     * @type {Array.<number>}
+     */
+    get array(){
+        return [this.m11, this.m12, this.m21, this.m22];
+    }
+
+    // setter -----------------------------------------------------------------
+    /**
+     * 自身のインスタンスに配列から値を設定する
+     * @type {Array.<number>}
+     */
+    set array(values){
+        if(
+            Array.isArray(values) !== true &&
+            values instanceof Object.getPrototypeOf(Int8Array) !== true
+        ){
+            throw new Error('Mat3.array[set]: invalid type');
+        }
+        if(values.length < 4){
+            throw new Error('Mat3.array[set]: invalid length');
         }
         this.m11 = values[0];
         this.m12 = values[1];
