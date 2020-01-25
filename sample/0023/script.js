@@ -19,15 +19,6 @@ window.addEventListener('DOMContentLoaded', () => {
         height: HEIGHT,
     });
 
-    const temp0 = new MathUtility.Mat2(0, 1, 2, 3);
-    const temp1 = new MathUtility.Mat2(4, 5, 6, 7);
-    const temp2 = new MathUtility.Vec2(8, 9);
-    console.log(temp0.multiplyByVec2(temp2));
-    console.log(temp0.multiplyByMat2(temp1));
-    console.log(temp0.multiplyToMat2(temp1));
-    temp0.rotate(Math.PI);
-    console.log(temp0.multiplyToMat2(temp1));
-
     // Shift キー押下で角度を固定できるようにするための処理
     let latestAngle = 0;
 
@@ -89,12 +80,6 @@ window.addEventListener('DOMContentLoaded', () => {
         const centerX = WIDTH / 2;
         const centerY = HEIGHT / 2;
 
-        // わかりやすさのために線を太くする
-        canvasUtil.lineWidth = 6;
-
-        // X 軸に水平なベクトルをピンクのラインで描画する
-        canvasUtil.strokeLine(centerX, centerY, centerX + centerX / 2, centerY, 'deeppink');
-
         // グリッドの幅に合わせた単位に変換する
         const unit = 1.0 / GRID_COUNT * 2;         // グリッドの幅
         const gridX = (x - centerX) / centerX * 2; // グリッド幅に応じた X の値
@@ -102,56 +87,80 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Vec2 オブジェクトのインスタンスを生成する
         const vector = new MathUtility.Vec2(gridX, gridY);
+        // Vec2 オブジェクトのプロパティからベクトルの長さを得る
+        const length = vector.length;
         // Vec2 オブジェクトのメソッドを利用して単位化する
         vector.normalize();
-        // ベクトルを青のラインで描画する
-        const cx = centerX + vector.x * centerX / 2; // グリッドに合わせた量に変換
-        const cy = centerY + vector.y * centerY / 2; // グリッドに合わせた量に変換
+
+        // X 軸に水平なベクトルとの内積・外積を求める
+        const dotProduct = vector.dot(new MathUtility.Vec2(1.0, 0.0));
+        const crossProduct = vector.cross(new MathUtility.Vec2(1.0, 0.0));
+        // 内積と外積の結果からラジアンを求める
+        let radian = 0.0;
+        if(crossProduct === 0){
+            radian = Math.acos(dotProduct);
+        }else if(crossProduct > 0){
+            radian = Math.acos(dotProduct);
+        }else{
+            radian = Math.PI * 2.0 - Math.acos(dotProduct);
+        }
+
+        // 求めたラジアンを使って回転行列を生成する
+        const rotationMatrix = MathUtility.Mat2.fromRotation(radian);
+        // 回転行列にスケールも加えてみる
+        rotationMatrix.scale(new MathUtility.Vec2(length, length));
+
+        // 実際に回転していることをわかりやすくする意味で……
+        // X 軸に水平なベクトルを作り、それを回転させてみる
+        const xVector = new MathUtility.Vec2(1.0, 0.0);
+        // 回転行列を使って +X に向いたベクトルを回転する
+        // ※このメソッドは引数をそのまま変更するので注意
+        rotationMatrix.applyVec2(xVector);
+
+        // わかりやすさのために線を太くする
+        canvasUtil.lineWidth = 10;
+
+        // 回転したベクトルを使ってラインを描画する
+        const cx = centerX + xVector.x * centerX / 2; // グリッドに合わせた量に変換
+        const cy = centerY - xVector.y * centerY / 2; // グリッドに合わせた量に変換
         canvasUtil.strokeLine(centerX, centerY, cx, cy, 'deepskyblue');
 
-        // ピンクのラインをベクトルとして見た場合、以下のように X 軸に水平
-        // ※ X が 1.0 で Y が 0.0 なので、長さはちょうど 1.0 で単位ベクトル
-        const pinkVector = new MathUtility.Vec2(1.0, 0.0);
+        // 同様に、行列の有効性をわかりやすくするために点も描いてみる
+        const pointTopLeft     = new MathUtility.Vec2(-1.0,  1.0);
+        const pointTopRight    = new MathUtility.Vec2( 1.0,  1.0);
+        const pointBottomLeft  = new MathUtility.Vec2(-1.0, -1.0);
+        const pointBottomRight = new MathUtility.Vec2( 1.0, -1.0);
+        rotationMatrix.applyVec2(pointTopLeft);
+        rotationMatrix.applyVec2(pointTopRight);
+        rotationMatrix.applyVec2(pointBottomLeft);
+        rotationMatrix.applyVec2(pointBottomRight);
 
-        // ピンクと青のベクトルの内積を求める
-        const dotProduct = vector.dot(pinkVector);
-        // 内積の結果をオレンジの棒グラフで描画
-        const dHorizontal = centerX + dotProduct * (WIDTH / 4);
-        const dVertical = HEIGHT - 100;
-        canvasUtil.strokeLine(centerX, dVertical, dHorizontal, dVertical, 'darkorange');
-
-        // ピンクと青のベクトルの外積を求める
-        const crossProduct = vector.cross(pinkVector);
-        // 外積の結果を緑の棒グラフで描画
-        const cHorizontal = 100;
-        const cVertical = centerY - crossProduct * (HEIGHT / 4);
-        canvasUtil.strokeLine(cHorizontal, centerY, cHorizontal, cVertical, 'green');
+        // 回転した座標を使って点（小さなサークル）を描画する
+        const colors = [
+            'deeppink',
+            'darkorange',
+            'green',
+            'navy',
+        ];
+        const points = [
+            pointTopLeft,
+            pointTopRight,
+            pointBottomLeft,
+            pointBottomRight,
+        ];
+        points.forEach((point, index) => {
+            const px = centerX + point.x * centerX / 2; // グリッドに合わせた量に変換
+            const py = centerY - point.y * centerY / 2; // グリッドに合わせた量に変換
+            canvasUtil.fillCircle(px, py, 10, colors[index]);
+        });
 
         // 線の太さを元に戻す
         canvasUtil.lineWidth = 2;
 
-        // 内積と外積の結果からラジアンを求める
-        let radian = 0.0;
-        if(crossProduct === 0){
-            // 外積が 0 である場合……
-            // ピンクのベクトルに対して青のベクトルは完全に水平となる
-            radian = Math.acos(dotProduct);
-        }else if(crossProduct > 0){
-            // 外積が 0 より大きい場合……
-            // ピンクのベクトルに対して青のベクトルは左側にある
-            radian = Math.acos(dotProduct);
-        }else{
-            // 外積が 0 より小さい場合……
-            // ピンクのベクトルに対して青のベクトルは右側にある
-            radian = Math.PI * 2.0 - Math.acos(dotProduct);
-        }
-
         // ログの出力
         canvasUtil.fillText(`グリッドの幅: ${unit}`, 10, 20);
-        canvasUtil.fillText(`２つの単位ベクトル同士の内積と外積、角度は……`, 10, 40);
-        canvasUtil.fillText(`dot: ${dotProduct}`, 10, 70, 'darkorange');
-        canvasUtil.fillText(`cross: ${crossProduct}`, 10, 100, 'green');
-        canvasUtil.fillText(`radian: ${radian}`, 10, 125, 'red');
+        canvasUtil.fillText(`scale: ${length}`, 10, 40);
+        canvasUtil.fillText(`radian: ${radian}`, 10, 60);
     }
 
 }, false);
