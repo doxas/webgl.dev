@@ -19,9 +19,6 @@ window.addEventListener('DOMContentLoaded', () => {
         height: HEIGHT,
     });
 
-    // Shift キー押下で角度を固定できるようにするための処理
-    let latestAngle = 0;
-
     // Canvas 上でマウスカーソルが動いた際（もしくはタッチ操作時）に描画を行う
     canvasUtil.canvas.addEventListener('pointermove', pointerMove, false);
 
