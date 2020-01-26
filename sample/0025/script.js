@@ -22,8 +22,8 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // 各種変数の宣言
-    let mode = select.value;    // 現在のモード
-    let now = 0.0;              // 経過時間
+    let mode = select.value;    // 現在のモード（ドロップダウンリストに依存）
+    let now = 0.0;              // 経過時間（秒単位）
     let beginTime = Date.now(); // 経過時間計測用に現在時のタイムスタンプを入れておく
     let positive = true;        // 時間が増えるのか、減るのかを意味するフラグ
 
@@ -33,6 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
         beginTime = Date.now();
         // １秒未満でフラグが反転した場合のことを考慮
         const diff = 1.0 - Math.min(now, 1.0);
+        // ミリ秒単位に変換してから差分を反映する
         beginTime -= diff * 1000;
         // フラグを反転させる
         positive = !positive;
@@ -52,6 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // 時間の計算
         now = (Date.now() - beginTime) / 1000;
+        // フラグの内容に応じて時間を増減させる
         let time = 0.0;
         if(positive === true){
             time = Math.min(now, 1.0);
