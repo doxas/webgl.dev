@@ -19,25 +19,6 @@ window.addEventListener('DOMContentLoaded', () => {
         height: HEIGHT,
     });
 
-    // Shift キー押下で角度を固定できるようにするための処理
-    let latestAngle = 0;
-
-    // TEMP
-    let m = new MathUtility.Mat3(
-        0, 1, 2,
-        3, 4, 5,
-        6, 7, 8,
-    );
-    console.log('origin', m);
-    let mr = MathUtility.Mat3.fromScaling(new MathUtility.Vec3(2.0, 2.0, 2.0));
-    mr.rotate(1.0);
-    let mi = mr.clone();
-    mi.inverse();
-    let r = m.multiplyByMat3(mr);
-    console.log('rotated', r);
-    let s = r.multiplyByMat3(mi);
-    console.log('inversed', s);
-
     // Canvas 上でマウスカーソルが動いた際（もしくはタッチ操作時）に描画を行う
     canvasUtil.canvas.addEventListener('pointermove', pointerMove, false);
 
@@ -57,10 +38,14 @@ window.addEventListener('DOMContentLoaded', () => {
         const x = evt.clientX - bound.x;
         const y = evt.clientY - bound.y;
 
+        // shift キーの押下時はオフセット量を設定する
+        const offsetX = evt.shiftKey === true ? 1.0 : 0.0;
+        const offsetY = evt.shiftKey === true ? 1.0 : 0.0;
+
         // グリッドの再描画を行う
         drawGrid();
-        // ベクトルを表すラインを描画する
-        drawLine(x, y);
+        // 座標の位置にサークルを描画する
+        drawCircle(x, y, offsetX, offsetY);
     }
 
     /**
@@ -87,11 +72,13 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ベクトルを表す原点から伸びるラインを描画する
+     * 座標を意味するサークルの描画
      * @param {number} x - ベクトルの終点の X 座標
      * @param {number} y - ベクトルの終点の Y 座標
+     * @param {number} offsetX - X 方向にオフセットさせる量
+     * @param {number} offsetY - Y 方向にオフセットさせる量
      */
-    function drawLine(x, y){
+    function drawCircle(x, y, offsetX, offsetY){
         // Canvas の中心を求めるため、幅と高さの半分の値を求める
         const centerX = WIDTH / 2;
         const centerY = HEIGHT / 2;
@@ -121,44 +108,36 @@ window.addEventListener('DOMContentLoaded', () => {
             radian = Math.PI * 2.0 - Math.acos(dotProduct);
         }
 
-        // 求めたラジアンを使って回転行列を生成する
-        const rotationMatrix = MathUtility.Mat2.fromRotation(radian);
-        // 回転行列にスケールも加えてみる
-        rotationMatrix.scale(new MathUtility.Vec2(length, length));
+        // 平行移動量から行列を生成する
+        const translateVector = new MathUtility.Vec2(offsetX, offsetY);
+        const mat3 = MathUtility.Mat3.fromTranslation(translateVector);
+        // 求めたラジアンを使って行列を回転させる
+        mat3.rotate(radian);
+        // スケールも加えてみる
+        mat3.scale(new MathUtility.Vec3(length, length, 1.0));
 
-        // 実際に回転していることをわかりやすくする意味で……
-        // X 軸に水平なベクトルを作り、それを回転させてみる
-        const xVector = new MathUtility.Vec2(1.0, 0.0);
-        // 回転行列を使って +X に向いたベクトルを回転する
-        // ※このメソッドは引数をそのまま変更するので注意
-        rotationMatrix.applyVec2(xVector);
-
-        // わかりやすさのために線を太くする
-        canvasUtil.lineWidth = 10;
-
-        // 回転したベクトルを使ってラインを描画する
-        const cx = centerX + xVector.x * centerX / 2; // グリッドに合わせた量に変換
-        const cy = centerY - xVector.y * centerY / 2; // グリッドに合わせた量に変換
-        canvasUtil.strokeLine(centerX, centerY, cx, cy, 'deepskyblue');
-
-        // 同様に、行列の有効性をわかりやすくするために点も描いてみる
-        const pointTopLeft     = new MathUtility.Vec2(-1.0,  1.0);
-        const pointTopRight    = new MathUtility.Vec2( 1.0,  1.0);
-        const pointBottomLeft  = new MathUtility.Vec2(-1.0, -1.0);
-        const pointBottomRight = new MathUtility.Vec2( 1.0, -1.0);
-        rotationMatrix.applyVec2(pointTopLeft);
-        rotationMatrix.applyVec2(pointTopRight);
-        rotationMatrix.applyVec2(pointBottomLeft);
-        rotationMatrix.applyVec2(pointBottomRight);
+        // 各種座標を Vec3 で定義
+        const pointCenter      = new MathUtility.Vec3( 0.0,  0.0,  1.0);
+        const pointTopLeft     = new MathUtility.Vec3(-1.0,  1.0,  1.0);
+        const pointTopRight    = new MathUtility.Vec3( 1.0,  1.0,  1.0);
+        const pointBottomLeft  = new MathUtility.Vec3(-1.0, -1.0,  1.0);
+        const pointBottomRight = new MathUtility.Vec3( 1.0, -1.0,  1.0);
+        mat3.applyVec3(pointCenter);
+        mat3.applyVec3(pointTopLeft);
+        mat3.applyVec3(pointTopRight);
+        mat3.applyVec3(pointBottomLeft);
+        mat3.applyVec3(pointBottomRight);
 
         // 回転した座標を使って点（小さなサークル）を描画する
         const colors = [
+            'red',
             'deeppink',
             'darkorange',
             'green',
             'navy',
         ];
         const points = [
+            pointCenter,
             pointTopLeft,
             pointTopRight,
             pointBottomLeft,
@@ -170,13 +149,11 @@ window.addEventListener('DOMContentLoaded', () => {
             canvasUtil.fillCircle(px, py, 10, colors[index]);
         });
 
-        // 線の太さを元に戻す
-        canvasUtil.lineWidth = 2;
-
         // ログの出力
         canvasUtil.fillText(`グリッドの幅: ${unit}`, 10, 20);
         canvasUtil.fillText(`scale: ${length}`, 10, 40);
         canvasUtil.fillText(`radian: ${radian}`, 10, 60);
+        canvasUtil.fillText(`offset: [${offsetX}, ${offsetY}]`, 10, 80, 'red');
     }
 
 }, false);
