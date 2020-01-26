@@ -1011,6 +1011,19 @@ class Mat3 {
         return this;
     }
     /**
+     * 与えられた Vec2 インスタンスを平行移動量として自身に反映する
+     * （このメソッドはインスタンス自身を変更します）
+     * @param {Vec2} v - 平行移動料を格納した Vec2 インスタンス
+     * @return {Mat3} 計算結果を反映した新しい Mat3 インスタンス
+     */
+    translate(v){
+        if(v instanceof Vec2 !== true){
+            throw new Error('Mat3.translate: invalid argument');
+        }
+        this.multiply(Mat3.fromTranslation(v));
+        return this;
+    }
+    /**
      * 与えられた Mat3 インスタンスを自身に乗算する
      * （このメソッドはインスタンス自身を変更します）
      * @param {Mat3} m - 自身に乗算する Mat3 のインスタンス
@@ -1035,7 +1048,7 @@ class Mat3 {
             throw new Error('Mat3.applyVec3: invalid argument');
         }
         const t = this.multiplyByVec3(v);
-        v.set(t.x, t.y);
+        v.set(t.x, t.y, t.z);
         return v;
     }
     /**
@@ -1047,10 +1060,10 @@ class Mat3 {
     }
     /**
      * 与えられた Vec3 インスタンスを自身に乗算した結果を返す
-     *     this        arg
-     * | m11, m12 |   | x |
-     * |          | x |   |
-     * | m21, m22 |   | y |
+     *       this           arg
+     * | m11, m12, m13 |   | x |
+     * | m21, m22, m23 | x | y |
+     * | m31, m32, m33 |   | z |
      * @param {Vec3} v - 乗算する Vec3 インスタンス
      * @return {Vec3} 乗算結果を反映した新しい Vec3 インスタンス
      */
@@ -1058,16 +1071,17 @@ class Mat3 {
         if(v instanceof Vec3 !== true){
             throw new Error('Mat3.multiplyByVec3: invalid argument');
         }
-        const tx = this.m11 * v.x + this.m12 * v.y;
-        const ty = this.m21 * v.x + this.m22 * v.y;
-        return new Vec3(tx, ty);
+        const tx = this.m11 * v.x + this.m12 * v.y + this.m13 * v.z;
+        const ty = this.m21 * v.x + this.m22 * v.y + this.m23 * v.z;
+        const tz = this.m31 * v.x + this.m32 * v.y + this.m33 * v.z;
+        return new Vec3(tx, ty, tz);
     }
     /**
      * 与えられた Mat3 インスタンスを自身に乗算した結果を返す
-     *     this           arg
-     * | m11, m12 |   | a11, a12 |
-     * |          | x |          |
-     * | m21, m22 |   | a21, a22 |
+     *       this                 arg
+     * | m11, m12, m13 |   | a11, a12, a13 |
+     * | m21, m22, m23 | x | a21, a22, a23 |
+     * | m31, m32, m33 |   | a31, a32, a33 |
      * @param {Mat3} m - 乗算する Mat3 インスタンス
      * @return {Mat3} 乗算結果を反映した新しい Mat3 インスタンス
      */
@@ -1088,10 +1102,10 @@ class Mat3 {
     }
     /**
      * 与えられた Mat3 インスタンスに対して自身を乗算した結果を返す
-     *     arg            this
-     * | a11, a12 |   | m11, m12 |
-     * |          | x |          |
-     * | a21, a22 |   | m21, m22 |
+     *        arg                this
+     * | a11, a12, a13 |   | m11, m12, m13 |
+     * | a21, a22, a23 | x | m21, m22, m23 |
+     * | a31, a32, a33 |   | m31, m32, m33 |
      * @param {Mat3} m - 乗算の対象となる Mat3 インスタンス
      * @return {Mat3} 乗算結果を反映した新しい Mat3 インスタンス
      */
@@ -1099,11 +1113,16 @@ class Mat3 {
         if(m instanceof Mat3 !== true){
             throw new Error('Mat3.multiplyToMat3: invalid argument');
         }
-        const t11 = m.m11 * this.m11 + m.m12 * this.m21;
-        const t12 = m.m11 * this.m12 + m.m12 * this.m22;
-        const t21 = m.m21 * this.m11 + m.m22 * this.m21;
-        const t22 = m.m21 * this.m12 + m.m22 * this.m22;
-        return new Mat3(t11, t12, t21, t22);
+        const t11 = m.m11 * this.m11 + m.m12 * this.m21 + m.m13 * this.m31;
+        const t12 = m.m11 * this.m12 + m.m12 * this.m22 + m.m13 * this.m32;
+        const t13 = m.m11 * this.m13 + m.m12 * this.m23 + m.m13 * this.m33;
+        const t21 = m.m21 * this.m11 + m.m22 * this.m21 + m.m23 * this.m31;
+        const t22 = m.m21 * this.m12 + m.m22 * this.m22 + m.m23 * this.m32;
+        const t23 = m.m21 * this.m13 + m.m22 * this.m23 + m.m23 * this.m33;
+        const t31 = m.m31 * this.m11 + m.m32 * this.m21 + m.m33 * this.m31;
+        const t32 = m.m31 * this.m12 + m.m32 * this.m22 + m.m33 * this.m32;
+        const t33 = m.m31 * this.m13 + m.m32 * this.m23 + m.m33 * this.m33;
+        return new Mat3(t11, t12, t13, t21, t22, t23, t31, t32, t33);
     }
 
     // getter -----------------------------------------------------------------
@@ -1112,7 +1131,11 @@ class Mat3 {
      * @type {Array.<number>}
      */
     get array(){
-        return [this.m11, this.m12, this.m21, this.m22];
+        return [
+            this.m11, this.m12, this.m13,
+            this.m21, this.m22, this.m23,
+            this.m31, this.m32, this.m33
+        ];
     }
 
     // setter -----------------------------------------------------------------
@@ -1127,13 +1150,18 @@ class Mat3 {
         ){
             throw new Error('Mat3.array[set]: invalid type');
         }
-        if(values.length < 4){
+        if(values.length < 9){
             throw new Error('Mat3.array[set]: invalid length');
         }
         this.m11 = values[0];
         this.m12 = values[1];
-        this.m21 = values[2];
-        this.m22 = values[3];
+        this.m13 = values[2];
+        this.m21 = values[3];
+        this.m22 = values[4];
+        this.m23 = values[5];
+        this.m31 = values[6];
+        this.m32 = values[7];
+        this.m33 = values[8];
     }
 }
 
