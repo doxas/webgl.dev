@@ -4,10 +4,10 @@
 ## tags
 
 * JavaScript基礎
-* 開発環境
+* Canvas2D
 * 数学の基礎
 * 3Dプログラミング
-* 3Dグラフィックス
+* 3DCG
 * WebGL
 * GLSL
 * WebGL2
@@ -15,7 +15,6 @@
 * three.js
 * pixi.js
 * library
-* Canvas2D
 * WebXR
 * WebAssembly
 * WebAudio
@@ -24,7 +23,7 @@
 
 ## 0001
 
-### 開発環境, JavaScript基礎
+### JavaScript基礎
 
 まずは雛形ファイルを用意し、ファイル構成とそれぞれの意味・役割を明確にする。
 
@@ -34,7 +33,7 @@ HTML に script タグを書くと読み込めますよ、HTML は CSS でスタ
 
 ## 0002
 
-### 開発環境, JavaScript基礎
+### JavaScript基礎
 
 ES2015 以降の JavaScript の話と、変数スコープの違い。
 
@@ -44,7 +43,7 @@ ES2015 以降の JavaScript の話と、変数スコープの違い。
 
 ## 0003
 
-### 開発環境, JavaScript基礎
+### JavaScript基礎
 
 prototype と class 構文について。
 
@@ -56,13 +55,13 @@ prototype と class 構文について。
 
 ## 0004
 
-### 開発環境, JavaScript基礎
+### JavaScript基礎
 
 アロー関数の話。JavaScript の `this` の話。
 
 ## 0005
 
-### 開発環境, JavaScript基礎
+### JavaScript基礎
 
 クロスオリジンの話とローカルサーバの起動方法に関する話。
 
@@ -74,7 +73,7 @@ node.js のインストールなどの話も引用したほうがいいかもし
 
 ## 0006
 
-### 開発環境, JavaScript基礎
+### JavaScript基礎
 
 ここでやっと非同期処理の話と `Promise` の話。
 
@@ -82,7 +81,7 @@ node.js のインストールなどの話も引用したほうがいいかもし
 
 ## 0007
 
-### 開発環境, JavaScript基礎
+### JavaScript基礎
 
 JavaScript とイベント駆動の話。
 
