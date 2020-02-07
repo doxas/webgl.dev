@@ -1,12 +1,13 @@
 
-// JavaScript での関数の定義
-function loaded(){
-    // const キーワードでの変数宣言と、セレクタによる要素の参照
-    const out = document.querySelector('#out');
-    // 参照先の要素にテキストを設定
-    out.textContent = '👻👻👻';
-}
+// 開発者ツールのコンソールへの出力
+console.log(1 + 2 + 3 + 4 + 5);
 
-// ウェブページのコンテンツがロード完了した時点で自動的に関数を実行
-window.addEventListener('DOMContentLoaded', loaded, false);
+// インラインコメント
+// ※同じ行の、スラッシュ２つ以降をコメントして扱う
+
+/*
+    ※複数行をまとめてコメントとして扱う
+    alert(1 + 2 + 3 + 4 + 5);
+*/
+
 
