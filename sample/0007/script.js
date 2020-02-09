@@ -14,40 +14,40 @@ const Obj = new Object();
 // ----------------------------------------------------------------------------
 
 // 配列は初期化時の指定でいろいろ変わるので注意
-let arr;
+let ARR;
 
-arr = [1, 2, 3];          // → [1, 2, 3]
-arr = new Array(1, 2, 3); // → [1, 2, 3]
-arr = [3];                // → [3]
-arr = new Array(3);       // → [undefined, undefined, undefined]
+ARR = [1, 2, 3];          // → [1, 2, 3]
+ARR = new Array(1, 2, 3); // → [1, 2, 3]
+ARR = [3];                // → [3]
+ARR = new Array(3);       // → [undefined, undefined, undefined]
 
 // 配列の要素へのアクセスはカギ括弧に整数を指定する
-arr = ['abc', 'def', 'ghi'];
-console.log(arr[1]); // → def
+ARR = ['abc', 'def', 'ghi'];
+console.log(ARR[1]); // → def
 
 // 配列の中に、さらに配列を入れることもできる
-arr = [[0, 1, 2], [3, 4, 5]];
-console.log(arr[1][2]); // → 5
+ARR = [[0, 1, 2], [3, 4, 5]];
+console.log(ARR[1][2]); // → 5
 
 // ----------------------------------------------------------------------------
 
 // オブジェクトの要素にはキー名を使ってアクセスでき……
 // ドット記法とブラケット記法のいずれかを利用できる
-let obj = {
+let OBJ = {
     foo: 'FOO',
     bar: 'BAR',
     baz: 'BAZ'
 };
 
 // ドット記法
-console.log(obj.foo); // → FOO
+console.log(OBJ.foo); // → FOO
 // ブラケット記法
-console.log(obj['bar']); // → BAR
+console.log(OBJ['bar']); // → BAR
 
 // ----------------------------------------------------------------------------
 
 // 配列やオブジェクトを定義するとき、最後のカンマは自動的に無視される
-arr = [
+ARR = [
     'foo',
     'bar',
     'baz', // ← 次の要素は存在しないけどエラーにはならない
