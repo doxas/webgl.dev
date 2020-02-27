@@ -1,38 +1,34 @@
 
-// 関数を定義する
-function FUNC(){
-    console.log('関数 FUNC が呼び出されました');
-}
+// 数値
+console.log(999);  // 整数
+console.log(9.99); // 浮動小数点
+console.log(.99);  // 浮動小数点（整数部の省略時は 0 として扱われる）
+console.log(9e9);  // 浮動小数点（指数表記）
+console.log(0b11); // ２進数
+console.log(0o11); // ８進数
+console.log(0x11); // １６進数
 
-// 関数を呼び出す
-FUNC();
+// 文字（クォーテーションはクォートと表記する場合もあります）
+console.log('JavaScript'); // シングルクォーテーション
+console.log("JavaScript"); // ダブルクォーテーション
+console.log(`JavaScript`); // バッククォーテーション
 
-// ----------------------------------------------------------------------------
+// 真偽値
+console.log(true);
+console.log(false);
 
-// 関数を宣言
-function OUTER(){
-    // 関数の中で関数を宣言
-    function INNER(){
-        console.log('関数 INNER が呼び出されました');
-    }
+// 未定義であるということを意味する
+console.log(undefined);
 
-    // 関数内であれば呼び出し可能
-    INNER();
-}
+// 値が存在しないということを意味する
+console.log(null);
 
-// 関数を呼び出す
-OUTER();
+// 配列
+console.log([]);
 
-// INNER 関数はこの場所では呼び出せない
-INNER(); // → エラーになる
+// オブジェクト
+console.log({});
 
-// ----------------------------------------------------------------------------
-
-// 関数の宣言が終わっていないのに呼び出す
-HOISTING();
-
-// 関数の宣言を記述順としては後ろで定義する
-function HOISTING(){
-    console.log('関数 HOISTING が呼び出されました');
-}
+// 正規表現
+console.log(/regexp/);
 

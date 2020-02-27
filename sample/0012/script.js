@@ -1,30 +1,29 @@
 
-// ウェブブラウザが HTML のパースを完了してから処理を行う
-window.addEventListener('DOMContentLoaded', () => {
-    // body 全体
-    const body = document.body;
+try{
+    // 存在しないメソッドを呼び出そうとすると……
+    Array.noneDifinition();
+}catch(error){
+    console.log('😱', error);
+}
 
-    // 最初に登場する div
-    const div = document.querySelector('div');
+// ----------------------------------------------------------------------------
 
-    // すべての p
-    const paragraphAll = document.querySelectorAll('p');
+try{
+    // 存在しないメソッドを呼び出そうとすると……
+    Array.noneDifinition();
+}catch(error){
+    console.log('😭', error);
+}finally{
+    // エラーが起きても起きなくても実行する処理
+    console.log('finally ブロックが実行されました');
+}
 
-    // div の最初の子ノード
-    const text = div.firstChild;
+// ----------------------------------------------------------------------------
 
-    // div の最初の子エレメント
-    const span = div.firstElementChild;
-
-    // id や class 属性を持つ要素
-    const paragraphWithId = document.getElementById('p-with-id');
-    const paragraphWithClass = document.getElementsByClassName('p-with-class');
-
-    // Element の新規生成
-    const createDiv = document.createElement('div');
-
-    // Element を子要素として追加、または子要素の削除
-    div.appendChild(createDiv);
-    div.removeChild(span);
-}, false);
+// Error オブジェクトのインスタンスを作成して例外をスローする
+try{
+    throw new Error('something error!');
+}catch(error){
+    console.log('😇', error);
+}
 

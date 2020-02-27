@@ -1,29 +1,46 @@
 
-try{
-    // 存在しないメソッドを呼び出そうとすると……
-    Array.noneDifinition();
-}catch(error){
-    console.log('😱', error);
+// 繰り返し（for 文）
+const year = 10;
+for(let age = 0; age < year; ++age){
+    console.log(`そして ${age} 年が経過した……`);
 }
 
 // ----------------------------------------------------------------------------
 
-try{
-    // 存在しないメソッドを呼び出そうとすると……
-    Array.noneDifinition();
-}catch(error){
-    console.log('😭', error);
-}finally{
-    // エラーが起きても起きなくても実行する処理
-    console.log('finally ブロックが実行されました');
+// for-in
+const fruits = {
+    apple: '🍎 りんご',
+    orange: '🍊 オレンジ',
+    peach: '🍑 もも',
+};
+for(let f in fruits){
+    console.log(f);
 }
 
 // ----------------------------------------------------------------------------
 
-// Error オブジェクトのインスタンスを作成して例外をスローする
-try{
-    throw new Error('something error!');
-}catch(error){
-    console.log('😇', error);
+// for-of
+const foods = [
+    '🍜',
+    '🍛',
+    '🍔',
+];
+for(let f of foods){
+    console.log(f);
 }
+
+// ----------------------------------------------------------------------------
+
+// 繰り返し（while 文）
+let ticket = 10;
+while(ticket > 0){
+    const lotto = ticket % 4;
+    if(lotto === 0){
+        console.log('当たり！');
+    }else{
+        console.log('ハズレ！');
+    }
+    --ticket;
+}
+console.log('チケットがなくなりました！');
 
