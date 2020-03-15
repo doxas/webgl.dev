@@ -9,30 +9,21 @@ FUNC();
 
 // ----------------------------------------------------------------------------
 
-// 関数を宣言
-function OUTER(){
-    // 関数の中で関数を宣言
-    function INNER(){
-        console.log('関数 INNER が呼び出されました');
-    }
-
-    // 関数内であれば呼び出し可能
-    INNER();
+// 引数のある関数の定義
+function FUNC_WITH_ARGUMENT(arg){
+    console.log(arg);
 }
 
-// 関数を呼び出す
-OUTER();
-
-// INNER 関数はこの場所では呼び出せない
-INNER(); // → エラーになる
+// 引数を指定して関数を呼び出す
+FUNC_WITH_ARGUMENT('これは引数です');
 
 // ----------------------------------------------------------------------------
 
-// 関数の宣言が終わっていないのに呼び出す
-HOISTING();
-
-// 関数の宣言を記述順としては後ろで定義する
-function HOISTING(){
-    console.log('関数 HOISTING が呼び出されました');
+// 戻り値のある関数の定義
+function FUNC_WITH_RETURN(){
+    return 'これは戻り値です';
 }
+
+// 関数の戻り値を取得してコンソールへそのまま出力
+console.log(FUNC_WITH_RETURN());
 
