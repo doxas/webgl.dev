@@ -1,79 +1,47 @@
 
-// 代入演算子
-let i = 0;
+// 変数を宣言無しで記述
+globalVariable = null;
 
-// 算術演算
-i = 10 + 3;     // → 13
-i = 10 - 3;     // → 7
-i = 10 * 3;     // → 30
-i = 10 / 3;     // → 3.3333333333333335
-i = 10 % 3;     // → 1
-i = 10 ** 3;    // → 1000
+// 変数を var 宣言で定義
+var variable = null;
 
-// 代入＋算術演算
-console.log(i); // → 1000
-i += 3;         // → 1003
-i -= 3;         // → 1000
-i *= 3;         // → 3000
-i /= 3;         // → 1000
-i %= 3;         // → 1
+// 変数を let 宣言で定義
+let letVariable = null;
 
-// インクリメント、デクリメント
-i = 1;
-console.log(++i); // → 2;
-i = 1;
-console.log(i++); // → 1;
-i = 1;
-console.log(--i); // → 0;
-i = 1;
-console.log(i--); // → 1;
+// 変数を const 宣言で定義
+const constVariable = null;
 
 // ----------------------------------------------------------------------------
 
-// 文字列の連結
-i = 'abc' + 'def';
-console.log(i); // → abcdef
+// 宣言無し変数はグローバルなスコープを持つ
+console.log(globalVariable === window.globalVariable); // → true
+
+// var や let で宣言した変数は再代入ができる
+variable = '再代入';
+letVariable = '再代入';
+
+// const で宣言した変数には再代入はできない
+// constVariable = '再代入'; // → エラーになる
 
 // ----------------------------------------------------------------------------
 
-// 論理演算
-i = !true;         // → false
-i = 1 == 1;        // → true
-i = 1 != 1;        // → false
-i = 1 === 1;       // → true
-i = 1 !== 1;       // → false
-i = 1 > 1;         // → false
-i = 1 < 1;         // → false
-i = 1 >= 1;        // → true
-i = 1 <= 1;        // → true
-i = true && false; // → false
-i = true || false; // → true
+let booleanVariable   = true;             // 真偽値
+let numberVariable    = 0;                // 数値
+let stringVariable    = '文字列';         // 文字列
+let undefinedVariable = undefined;        // 未定義
+let nullVariable      = null;             // 値が存在しない
+let arrayVariable     = [];               // 配列
+let objectVariable    = {};               // オブジェクト
+let functionVariable  = function(){};     // 関数
+let symbolVariable    = Symbol('symbol'); // シンボル
 
-// ----------------------------------------------------------------------------
-
-// ビット演算
-i = ~2;         // → -3
-i = 1 & 2;      // → 0
-i = 1 | 2;      // → 3
-i = 1 ^ 2;      // → 3
-i =  100 << 2;  // → 400
-i = -100 << 2;  // → -400
-i =  100 >> 2;  // → 25
-i = -100 >> 2;  // → -25
-i =  100 >>> 2; // → 25
-i = -100 >>> 2; // → 1073741799
-
-// ----------------------------------------------------------------------------
-
-// その他、比較的よく利用する演算子
-console.log(+1);                  // → 1
-console.log(+'1');                // → 1
-console.log(-1);                  // → -1
-console.log(-'-1');               // → 1
-console.log(typeof 0);            // → number
-console.log([] instanceof Array); // → true
-console.log(true ? '真' : '偽');  // → 真
-i = {foo: 'foo', bar: 'bar'};
-delete i.foo;
-console.log(i); // → {bar: 'bar'}
+console.log(typeof booleanVariable);   // → boolean
+console.log(typeof numberVariable);    // → number
+console.log(typeof stringVariable);    // → string
+console.log(typeof undefinedVariable); // → undefined
+console.log(typeof nullVariable);      // → object
+console.log(typeof arrayVariable);     // → object
+console.log(typeof objectVariable);    // → object
+console.log(typeof functionVariable);  // → function
+console.log(typeof symbolVariable);    // → symbol
 

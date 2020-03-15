@@ -1,38 +1,17 @@
 
-let counter = 0;
+// リテラルを利用した配列の生成
+const arr = [];
 
-// 条件分岐（if 文）
-if(counter < 10){
-    console.log('カウンターの値は 10 よりも小さい');
-}
+// Array オブジェクトのインスタンスを生成
+const Arr = new Array();
 
-// 条件分岐（if ~ else）
-if(counter < 10){
-    console.log('カウンターの値は 10 よりも小さい');
-}else{
-    console.log('カウンターの値は 10 以上');
-}
+// Array オブジェクトの（インスタンスが）持つプロパティ
+console.log(arr.length); // → 0
 
-// 条件分岐（if ~ else if）
-if(counter < 10){
-    console.log('カウンターの値は 10 よりも小さい');
-}else if(counter < 20){
-    console.log('カウンターの値は 10 以上、ただし 20 よりも小さい');
-}else{
-    console.log('カウンターの値は 20 以上');
-}
+// Array オブジェクトの（インスタンスが）持つメソッド
+arr.push('first', 'second');
+console.log(arr); // → ['first', 'second']
 
-// ----------------------------------------------------------------------------
-
-// 条件分岐（switch 文）
-switch(counter){
-    case 10:
-        console.log('カウンターの値は 10');
-        break;
-    case 20:
-        console.log('カウンターの値は 20');
-        break;
-    default:
-        console.log('カウンターの値は 10 でも 20 でもない');
-}
+// Array オブジェクト自体が持つ static（静的）なメソッド
+console.log(Array.isArray(arr)); // → true
 
