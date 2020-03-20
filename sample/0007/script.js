@@ -1,47 +1,38 @@
 
-// 変数を宣言無しで記述
-globalVariable = null;
+// 関数を定義する
+function FUNC(){
+    console.log('関数 FUNC が呼び出されました');
+}
 
-// 変数を var 宣言で定義
-var variable = null;
-
-// 変数を let 宣言で定義
-let letVariable = null;
-
-// 変数を const 宣言で定義
-const constVariable = null;
+// 関数を呼び出す
+FUNC();
 
 // ----------------------------------------------------------------------------
 
-// 宣言無し変数はグローバルなスコープを持つ
-console.log(globalVariable === window.globalVariable); // → true
+// 関数を宣言
+function OUTER(){
+    // 関数の中で関数を宣言
+    function INNER(){
+        console.log('関数 INNER が呼び出されました');
+    }
 
-// var や let で宣言した変数は再代入ができる
-variable = '再代入';
-letVariable = '再代入';
+    // 関数内であれば呼び出し可能
+    INNER();
+}
 
-// const で宣言した変数には再代入はできない
-// constVariable = '再代入'; // → エラーになる
+// 関数を呼び出す
+OUTER();
+
+// INNER 関数はこの場所では呼び出せない
+INNER(); // → エラーになる
 
 // ----------------------------------------------------------------------------
 
-let booleanVariable   = true;             // 真偽値
-let numberVariable    = 0;                // 数値
-let stringVariable    = '文字列';         // 文字列
-let undefinedVariable = undefined;        // 未定義
-let nullVariable      = null;             // 値が存在しない
-let arrayVariable     = [];               // 配列
-let objectVariable    = {};               // オブジェクト
-let functionVariable  = function(){};     // 関数
-let symbolVariable    = Symbol('symbol'); // シンボル
+// 関数の宣言が終わっていないのに呼び出す
+HOISTING();
 
-console.log(typeof booleanVariable);   // → boolean
-console.log(typeof numberVariable);    // → number
-console.log(typeof stringVariable);    // → string
-console.log(typeof undefinedVariable); // → undefined
-console.log(typeof nullVariable);      // → object
-console.log(typeof arrayVariable);     // → object
-console.log(typeof objectVariable);    // → object
-console.log(typeof functionVariable);  // → function
-console.log(typeof symbolVariable);    // → symbol
+// 関数の宣言を記述順としては後ろで定義する
+function HOISTING(){
+    console.log('関数 HOISTING が呼び出されました');
+}
 
